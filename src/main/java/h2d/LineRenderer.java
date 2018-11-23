@@ -1,4 +1,4 @@
-package hylmargx;
+package h2d;
 
 public abstract class LineRenderer implements Renderer<Line> {
 	

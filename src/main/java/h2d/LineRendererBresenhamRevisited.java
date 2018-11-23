@@ -1,4 +1,4 @@
-package hylmargx;
+package h2d;
 
 public class LineRendererBresenhamRevisited extends LineRenderer {
 	

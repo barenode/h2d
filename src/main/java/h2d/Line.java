@@ -1,8 +1,12 @@
-package hylmargx;
+package h2d;
 
 import java.awt.Color;
 
 import org.apache.log4j.Logger;
+
+import transforms.Mat3;
+import transforms.Point2D;
+import transforms.Vec2D;
 
 public final class Line {
 	private static final Logger log = Logger.getLogger("Bresenham");
@@ -138,6 +142,10 @@ public final class Line {
 			}
 		}		
 		return new Point(x, y, color);
+	}
+	
+	public Line transform(Mat3 mat) {
+		return new Line(origin.transform(mat), end.transform(mat));
 	}
 
 	@Override

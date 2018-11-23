@@ -1,5 +1,7 @@
-package hylmargx;
+package h2d;
 
+import h2d.Line;
+import h2d.Point;
 import junit.framework.TestCase;
 
 public class LineTestCase extends TestCase {	

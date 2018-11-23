@@ -1,7 +1,11 @@
-package hylmargx;
+package h2d;
 
 import java.awt.Color;
 import java.util.Comparator;
+
+import transforms.Mat3;
+import transforms.Point2D;
+import transforms.Vec2D;
 
 /**
  * @author hylmar
@@ -39,6 +43,12 @@ public class Point {
 	public String toString() {
 		return "[" + x + ", " + y + "]";
 	}	
+	
+	public Point transform(Mat3 mat) {
+		Point2D p = new Point2D(x, y).mul(mat);
+		Vec2D v = p.dehomog().get();
+		return new Point((int)Math.round(v.getX()), (int)Math.round(v.getY()), color);
+	}
 
 	@Override
 	public int hashCode() {

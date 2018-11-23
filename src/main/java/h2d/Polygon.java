@@ -1,8 +1,11 @@
-package hylmargx;
+package h2d;
 
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+
+import transforms.Mat3;
 
 public class Polygon {
 
@@ -36,5 +39,9 @@ public class Polygon {
 		}
 		edges.add(new Line(previous, points.get(0), color));
 		return edges;
+	}
+	
+	public Polygon transform(Mat3 mat) {
+		return new Polygon(points.stream().map(p->p.transform(mat)).collect(Collectors.toList()));
 	}
 }

@@ -1,4 +1,4 @@
-package hylmargx;
+package h2d;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -58,6 +58,6 @@ public class ImageImpl implements Image {
 	public void save(String name) 
 		throws Exception
 	{
-		ImageIO.write(image, "jpg", new File("/uhk-work/PGR1/werkz/" + name + ".jpg"));
+		ImageIO.write(image, "jpg", new File("./" + name + ".jpg"));
 	}
 }

@@ -1,4 +1,4 @@
-package hylmargx;
+package h2d;
 
 import java.awt.Color;
 import java.awt.Graphics;
