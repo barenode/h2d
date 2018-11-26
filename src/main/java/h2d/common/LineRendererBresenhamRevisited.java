@@ -1,4 +1,4 @@
-package h2d;
+package h2d.common;
 
 public class LineRendererBresenhamRevisited extends LineRenderer {
 	

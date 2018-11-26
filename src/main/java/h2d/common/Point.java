@@ -1,4 +1,4 @@
-package h2d;
+package h2d.common;
 
 import java.awt.Color;
 import java.util.Comparator;
@@ -10,7 +10,8 @@ import transforms.Vec2D;
 /**
  * @author hylmar
  */
-public class Point {
+public class Point {	
+	public static final Point ZERO = new Point(0, 0);
 
 	private final int x;
 	private final int y;
@@ -43,6 +44,13 @@ public class Point {
 	public String toString() {
 		return "[" + x + ", " + y + "]";
 	}	
+	
+	/**
+	 * Return norm-2 distance between points;
+	 */
+	public double distance(Point p) {	
+		return Math.sqrt(Math.pow(x-p.getX(), 2) + Math.pow(y-p.getY(), 2));
+	}
 	
 	public Point transform(Mat3 mat) {
 		Point2D p = new Point2D(x, y).mul(mat);

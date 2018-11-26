@@ -1,4 +1,4 @@
-package h2d;
+package h2d.common;
 
 import java.util.ArrayList;
 import java.util.Collections;

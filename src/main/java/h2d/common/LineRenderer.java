@@ -1,4 +1,4 @@
-package h2d;
+package h2d.common;
 
 public abstract class LineRenderer implements Renderer<Line> {
 	

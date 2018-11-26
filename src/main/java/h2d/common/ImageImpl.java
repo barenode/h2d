@@ -1,7 +1,8 @@
-package h2d;
+package h2d.common;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 
@@ -50,9 +51,12 @@ public class ImageImpl implements Image {
 		graphic.drawImage(image, 0, 0, null);		
 	}
 	
-	private void clear() {
-		this.image.getGraphics().setColor(Color.RED);
-		this.image.getGraphics().fillRect(0, 0, to2D(width), to2D(height));
+	@Override
+	public void clear() {
+		Graphics2D g2 = (Graphics2D)image.getGraphics();
+		g2.setColor(Color.RED);
+		g2.setBackground(new Color(255, 255, 255, 0));		
+		image.getGraphics().fillRect(0, 0, to2D(width), to2D(height));
 	}
 	
 	public void save(String name) 

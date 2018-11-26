@@ -1,15 +1,17 @@
-package h2d;
+package h2d.common;
 
 import java.awt.Color;
 import java.util.Arrays;
 
-import h2d.Circle;
-import h2d.CircleRendererParametrical;
-import h2d.ImageImpl;
-import h2d.Line;
-import h2d.Point;
-import h2d.PointRenderer;
-import h2d.Renderer;
+import h2d.common.Circle;
+import h2d.common.CircleRendererParametrical;
+import h2d.common.ImageImpl;
+import h2d.common.Line;
+import h2d.common.Point;
+import h2d.common.PointRenderer;
+import h2d.common.Polygon;
+import h2d.common.PolygonRenderer;
+import h2d.common.Renderer;
 import junit.framework.TestCase;
 import transforms.Mat3Rot2D;
 import transforms.Mat3RotX;

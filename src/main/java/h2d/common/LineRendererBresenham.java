@@ -1,4 +1,4 @@
-package h2d;
+package h2d.common;
 
 import org.apache.log4j.Logger;
 

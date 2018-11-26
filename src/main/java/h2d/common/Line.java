@@ -1,4 +1,4 @@
-package h2d;
+package h2d.common;
 
 import java.awt.Color;
 
@@ -67,6 +67,27 @@ public final class Line {
 	
 	public boolean isVertical() {
 		return origin.getY()==end.getY();
+	}
+	
+	public Vec2D vector() {
+		return new Vec2D(
+			end.getX()-origin.getX(), 
+			end.getY()-origin.getY());
+	}
+	
+	public double angle(Point point) {
+		System.out.println(cosine(point));
+		return Math.acos(cosine(point));
+	}
+	
+	public double sine(Point point) {
+		return Math.sqrt(1d-Math.pow(cosine(point), 2));
+	}
+	
+	public double cosine(Point point) {
+		Vec2D u = vector();
+		Vec2D v = new Line(end, point).vector();
+		return u.dot(v)/(u.length()*v.length());
 	}
 	
 	public Line trim() {		
