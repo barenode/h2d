@@ -15,9 +15,6 @@ import h2d.common.PolygonRenderer;
 import h2d.common.Renderer;
 
 public class PolygonController implements H2DCanvas.EventListener {
-
-	private final Color color;
-	private final Color background;
 	
 	private Renderer<Point> pointRenderer = new PointRenderer(Color.RED);
 	private Renderer<Polygon> polygonRenderer = new PolygonRenderer();
@@ -30,8 +27,8 @@ public class PolygonController implements H2DCanvas.EventListener {
 	
 	public PolygonController(Color color, Color background) {
 		super();
-		this.color = color;
-		this.background = background;
+		this.pointRenderer = new PointRenderer(color);
+		this.polygonRenderer = new PolygonRenderer(color, background);
 	}
 	
 	@Override
@@ -47,7 +44,7 @@ public class PolygonController implements H2DCanvas.EventListener {
 		} else if (SwingUtilities.isRightMouseButton(e)) {
 			canvas.add(
 				new H2DCanvas.ShapeHandler<Polygon>(
-					new Polygon(new ArrayList<>(points), color, background),
+					new Polygon(new ArrayList<>(points)),
 					polygonRenderer));
 			clear();
 		}
@@ -58,7 +55,7 @@ public class PolygonController implements H2DCanvas.EventListener {
 		if (points.size()==1) {
 			pointRenderer.render(points.get(0), image);
 		} else if (points.size()>1) {
-			polygonRenderer.render(new Polygon(points, color, background), image);
+			polygonRenderer.render(new Polygon(points), image);
 		}
 	}
 	

@@ -1,33 +1,25 @@
 package h2d.common;
 
-import java.awt.Color;
-
 import org.apache.log4j.Logger;
 
 import transforms.Mat3;
-import transforms.Point2D;
 import transforms.Vec2D;
 
 public final class Line {
 	private static final Logger log = Logger.getLogger("Bresenham");
+	private static final double HALF_PI = Math.PI/2d;
 	
 	private final Point origin;
 	private final Point end;
-	private final Color color;
 	
 	public Line(int originX, int originY, int endX, int endY) {
 		this(new Point(originX, originY), new Point(endX, endY));
 	}
 	
 	public Line(Point origin, Point end) {
-		this(origin, end, Color.BLACK);
-	}
-	
-	public Line(Point origin, Point end, Color color) {
 		super();
 		this.origin = origin;
 		this.end = end;
-		this.color = color;
 	}
 
 	public Point getOrigin() {
@@ -36,10 +28,6 @@ public final class Line {
 
 	public Point getEnd() {
 		return end;
-	}	
-	
-	public Color getColor() {
-		return color;
 	}
 
 	public Line flip() {
@@ -75,19 +63,41 @@ public final class Line {
 			end.getY()-origin.getY());
 	}
 	
-	public double angle(Point point) {
-		System.out.println(cosine(point));
-		return Math.acos(cosine(point));
-	}
-	
-	public double sine(Point point) {
-		return Math.sqrt(1d-Math.pow(cosine(point), 2));
-	}
+//	public double angle(Point point) {
+//		System.out.println(cosine(point));
+//		return Math.acos(cosine(point));
+//	}
+//	
+//	public double sine(Point point) {
+//		return Math.sqrt(1d-Math.pow(cosine(point), 2));
+//	}
 	
 	public double cosine(Point point) {
 		Vec2D u = vector();
 		Vec2D v = new Line(end, point).vector();
 		return u.dot(v)/(u.length()*v.length());
+	}
+	
+	public boolean isInside(Point point, Polygon.Orientation orientation) {
+		Vec2D o = origin.toVec();
+		Vec2D e = end.toVec();
+		Vec2D t = e.sub(o);
+		Vec2D per;
+		if (Polygon.Orientation.Clockwise==orientation) {
+			per = new Vec2D(t.getY(), -t.getX());
+		} else if (Polygon.Orientation.CounterClockwise==orientation) {
+			per = new Vec2D(-t.getY(), t.getX());
+		} else {
+			throw new IllegalArgumentException();
+		}
+		//Vec2D per = new Vec2D(t.getY(), -t.getX());
+		//Vec2D per = new Vec2D(-t.getY(), t.getX());
+		Vec2D p = point.toVec();
+		Vec2D v = p.sub(o);
+		double cos = v.normalized().get().dot(per.normalized().get());
+		double angle  = Math.acos(cos);
+		//System.out.println(angle);
+		return Math.abs(angle)<=HALF_PI;
 	}
 	
 	public Line trim() {		
@@ -162,7 +172,7 @@ public final class Line {
 				return null;
 			}
 		}		
-		return new Point(x, y, color);
+		return new Point(x, y);
 	}
 	
 	public Line transform(Mat3 mat) {

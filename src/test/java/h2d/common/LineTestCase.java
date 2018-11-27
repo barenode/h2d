@@ -16,18 +16,29 @@ public class LineTestCase extends TestCase {
 		System.out.println(intersection);
 	} 
 	
-	public void testAngle() throws Exception {
-		double sine;
+//	public void testAngle() throws Exception {
+//		double sine;
+//		
+//		sine =  new Line(1, 1, 2, 2).sine(new Point(3, 3));
+//		System.out.println(sine);
+//		
+//		sine =  new Line(1, 1, 2, 2).sine(new Point(1, 3));
+//		System.out.println(sine);
+//		
+//		sine =  new Line(1, 1, 3, 3).sine(new Point(2, 1));
+//		System.out.println(sine);
+//
+//	}
+	
+	public void testInside() {
+		System.out.println(Math.PI/2);
+		assertTrue(new Line(1, 1, 5, 5).isInside(new Point(3 , 3), Polygon.Orientation.CounterClockwise));
+		assertTrue(new Line(1, 1, 5, 5).isInside(new Point(3 , 4), Polygon.Orientation.CounterClockwise));
+		assertFalse(new Line(1, 1, 5, 5).isInside(new Point(3 , 0), Polygon.Orientation.CounterClockwise));		
+		assertTrue(new Line(4, 1, 1, 4).isInside(new Point(0 , 0), Polygon.Orientation.CounterClockwise));
 		
-		sine =  new Line(1, 1, 2, 2).sine(new Point(3, 3));
-		System.out.println(sine);
+		//assertTrue(new Line(4, 4, 1, 1).isInside(new Point(2 , 3)));
 		
-		sine =  new Line(1, 1, 2, 2).sine(new Point(1, 3));
-		System.out.println(sine);
-		
-		sine =  new Line(1, 1, 3, 3).sine(new Point(2, 1));
-		System.out.println(sine);
-
 	}
 	
 	

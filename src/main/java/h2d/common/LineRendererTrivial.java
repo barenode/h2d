@@ -1,10 +1,16 @@
 package h2d.common;
 
+import java.awt.Color;
+
 public class LineRendererTrivial extends LineRenderer {	
 	
 	public LineRendererTrivial() {
 		super();
 	}	
+	
+	public LineRendererTrivial(Color color) {
+		super(color);
+	}
 	
 	@Override
 	protected void leadByX(Line line, Image image) {
@@ -14,7 +20,7 @@ public class LineRendererTrivial extends LineRenderer {
 		final float q = line.getYIntercept();
 		for (int x = x1; x <= x2; x++) {
         	int y = (int)(q+x*k);
-        	image.pixel(x, y, line.getColor());
+        	image.pixel(x, y, getColor());
         }
 	}
 	
@@ -26,13 +32,13 @@ public class LineRendererTrivial extends LineRenderer {
 		final float k = line.getTangent();
 		if (Float.isInfinite(k)) {//zero delta x
 			for (int y = y1; y <= y2; y++) {
-				image.pixel(x1, y, line.getColor());
+				image.pixel(x1, y, getColor());
 			}
 		} else {
 			final float q = line.getYIntercept();
 			for (int y = y1; y <= y2; y++) {
 	    		int x = (int)((y-q)/k);
-	    		image.pixel(x, y, line.getColor());
+	    		image.pixel(x, y, getColor());
 	    	}
 		}	
 	}

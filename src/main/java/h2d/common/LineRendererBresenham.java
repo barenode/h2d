@@ -1,12 +1,18 @@
 package h2d.common;
 
+import java.awt.Color;
+
 import org.apache.log4j.Logger;
 
 public class LineRendererBresenham extends LineRenderer {
-	private static final Logger log = Logger.getLogger("Bresenham");
+	private static final Logger log = Logger.getLogger("Bresenham");	
 	
 	public LineRendererBresenham() {
 		super();
+	}
+	
+	public LineRendererBresenham(Color color) {
+		super(color);
 	}
 	
 	@Override
@@ -39,7 +45,7 @@ public class LineRendererBresenham extends LineRenderer {
 				log.debug("y: " + y);	
 				log.debug("p: " + p);		
 			}
-			image.pixel(i, y, line.getColor());
+			image.pixel(i, y, getColor());
 			if(p<0) {
 				p = p+k1;
 				if (log.isDebugEnabled()) {
@@ -85,7 +91,7 @@ public class LineRendererBresenham extends LineRenderer {
 				log.debug("y: " + i);	
 				log.debug("p: " + p);		
 			}
-			image.pixel(x, i, line.getColor());
+			image.pixel(x, i, getColor());
 			if(p<0) {
 				p = p+k1;
 				if (log.isDebugEnabled()) {

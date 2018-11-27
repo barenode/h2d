@@ -1,9 +1,15 @@
 package h2d.common;
 
-public class LineRendererBresenhamRevisited extends LineRenderer {
+import java.awt.Color;
+
+public class LineRendererBresenhamRevisited extends LineRenderer {	
 	
 	public LineRendererBresenhamRevisited() {
 		super();
+	}
+	
+	public LineRendererBresenhamRevisited(Color color) {
+		super(color);
 	}
 
 	@Override
@@ -22,7 +28,7 @@ public class LineRendererBresenhamRevisited extends LineRenderer {
 		int D = 2*dy - dx;
 		int y = y1;
 		for (int x=x1; x<=x2; x++) {		
-			image.pixel(x, y, line.getColor());
+			image.pixel(x, y, getColor());
 			if (D>0) {
 		       y = y + yi;
 		       D = D - 2*dx;
@@ -47,7 +53,7 @@ public class LineRendererBresenhamRevisited extends LineRenderer {
 		int D = 2*dx - dy;
 		int x = x1;
 		for (int y=y1; y<=y2; y++) {
-			image.pixel(x, y, line.getColor());
+			image.pixel(x, y, getColor());
 			if (D>0) {
 		       x = x + xi;
 		       D = D - 2*dy;

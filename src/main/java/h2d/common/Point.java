@@ -1,6 +1,5 @@
 package h2d.common;
 
-import java.awt.Color;
 import java.util.Comparator;
 
 import transforms.Mat3;
@@ -14,18 +13,12 @@ public class Point {
 	public static final Point ZERO = new Point(0, 0);
 
 	private final int x;
-	private final int y;
-	private final Color color;
+	private final int y;	
 	
 	public Point(int x, int y) {
-		this(x, y, Color.BLACK);		
-	}
-	
-	public Point(int x, int y, Color color) {
 		super();
 		this.x = x;
 		this.y = y;
-		this.color = color;
 	}
 
 	public int getX() {
@@ -34,10 +27,6 @@ public class Point {
 
 	public int getY() {
 		return y;
-	}
-
-	public Color getColor() {
-		return color;
 	}
 
 	@Override
@@ -55,14 +44,17 @@ public class Point {
 	public Point transform(Mat3 mat) {
 		Point2D p = new Point2D(x, y).mul(mat);
 		Vec2D v = p.dehomog().get();
-		return new Point((int)Math.round(v.getX()), (int)Math.round(v.getY()), color);
+		return new Point((int)Math.round(v.getX()), (int)Math.round(v.getY()));
+	}
+	
+	public Vec2D toVec() {
+		return new Vec2D(x, y);
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((color == null) ? 0 : color.hashCode());
 		result = prime * result + x;
 		result = prime * result + y;
 		return result;
@@ -76,19 +68,13 @@ public class Point {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Point other = (Point) obj;
-		if (color == null) {
-			if (other.color != null)
-				return false;
-		} else if (!color.equals(other.color))
-			return false;
+		Point other = (Point) obj;		
 		if (x != other.x)
 			return false;
 		if (y != other.y)
 			return false;
 		return true;
 	}
-
 
 
 	/**

@@ -1,9 +1,18 @@
 package h2d.common;
 
+import java.awt.Color;
+
 public abstract class LineRenderer implements Renderer<Line> {
 	
+	private final Color color;
+	
 	public LineRenderer() {
+		this(Color.BLUE);
+	}
+	
+	public LineRenderer(Color color) {
 		super();
+		this.color = color;
 	}
 	
 	protected abstract void leadByX(Line line, Image image);
@@ -27,4 +36,8 @@ public abstract class LineRenderer implements Renderer<Line> {
         	}
         }
 	}
+
+	public Color getColor() {
+		return color;
+	}	
 }

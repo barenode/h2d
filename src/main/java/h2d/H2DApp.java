@@ -16,7 +16,7 @@ public class H2DApp extends JFrame {
 		setSize(600, 600);
 		H2DCanvas canvas = new H2DCanvas();
 		add(canvas, BorderLayout.CENTER);
-		canvas.setEventListener(new PolygonIntersectionController());
+		canvas.setEventListener(new PolygonController());
 		//pack();
 	}
 	

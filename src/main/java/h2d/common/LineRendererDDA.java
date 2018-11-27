@@ -1,9 +1,15 @@
 package h2d.common;
 
+import java.awt.Color;
+
 public class LineRendererDDA extends LineRenderer {
 	
 	public LineRendererDDA() {
 		super();
+	}
+	
+	public LineRendererDDA(Color color) {
+		super(color);
 	}
 
 	@Override
@@ -14,7 +20,7 @@ public class LineRendererDDA extends LineRenderer {
 		final float k = line.getTangent(); 
 		float y = y1;			
 		for (int x = x1; x <= x2; x++) {
-			image.pixel(x, (int)y, line.getColor());
+			image.pixel(x, (int)y, getColor());
 			y += k;
 		}		
 	}
@@ -29,7 +35,7 @@ public class LineRendererDDA extends LineRenderer {
 		final float g = 1/k;				
 		float x = x1;				
 		for (int y = y1; y <= y2; y++) {
-			image.pixel((int)x, y, line.getColor());
+			image.pixel((int)x, y, getColor());
 			x += g;
 		}
 	}	
