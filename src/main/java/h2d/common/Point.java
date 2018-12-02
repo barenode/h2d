@@ -42,13 +42,21 @@ public class Point {
 	}
 	
 	public Point transform(Mat3 mat) {
-		Point2D p = new Point2D(x, y).mul(mat);
+		Point2D p = toPoint2D().mul(mat);
 		Vec2D v = p.dehomog().get();
-		return new Point((int)Math.round(v.getX()), (int)Math.round(v.getY()));
+		return Point.fromVec(v);
+	}
+	
+	public Point2D toPoint2D() {
+		return new Point2D(x, y);
 	}
 	
 	public Vec2D toVec() {
 		return new Vec2D(x, y);
+	}
+	
+	public static Point fromVec(Vec2D vec) {
+		return new Point((int)Math.round(vec.getX()), (int)Math.round(vec.getY()));
 	}
 
 	@Override

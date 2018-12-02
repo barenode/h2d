@@ -31,6 +31,22 @@ public class CircleController implements H2DCanvas.EventListener {
 
 	@Override
 	public void onMouseReleased(MouseEvent e, Point point, H2DCanvas canvas) {
+	}	
+
+	public Point getOrigin() {
+		return origin;
+	}
+
+	public void setOrigin(Point origin) {
+		this.origin = origin;
+	}
+
+	public Point getEnd() {
+		return end;
+	}
+
+	public void setEnd(Point end) {
+		this.end = end;
 	}
 
 	@Override
