@@ -18,26 +18,35 @@ public class ImageImpl implements Image {
 	
 	private final int pixelSize;
 	private final int width;
+	private final int imageWidth;
 	private final int height;
+	private final int imageHeight;
 	private final BufferedImage image;
 	
-	public ImageImpl(int pixelSize, int width, int height) {
+	public ImageImpl(int pixelSize, int imageWidth, int imageHeight) {
 		super();
 		this.pixelSize = pixelSize;
-		this.width = width;
-		this.height = height;	
-		this.image = new BufferedImage(to2D(width), to2D(height), BufferedImage.TYPE_INT_ARGB);
+		this.width = (imageWidth/pixelSize)+1;
+		this.height = (imageHeight/pixelSize)+1;
+		this.imageWidth = to2D(width);
+		this.imageHeight = to2D(height);
+		this.image = new BufferedImage(imageWidth+10, imageHeight+10, BufferedImage.TYPE_INT_ARGB);
 		clear();
 	}
 
 	@Override
 	public void pixel(int x, int y, Color color) {
-//		if (log.isDebugEnabled()) {
-//			log.debug("pixel [" + x + ", " + y + "]");
-//		}
+		if (x<0 || y<0 || x>=width || y>=height) {
+			return;
+		}
 		for (int i=to2D(x); i<to2D(x)+pixelSize;i++) {
 			for (int j=to2D(y); j<to2D(y)+pixelSize;j++) {
-				this.image.setRGB(i, j, color.getRGB());
+			try {
+					this.image.setRGB(i, j, color.getRGB());
+				} catch (Exception e) {
+					System.out.println(image.getWidth() + ":" + image.getHeight());
+					System.out.println("Errosr to paint " + x + ":" + y + " - " + i + "/" + j + "[" + imageWidth + ":" + imageHeight + "]");
+				}
 			}
 		}
 	}	

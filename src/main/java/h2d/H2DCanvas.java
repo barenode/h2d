@@ -1,6 +1,9 @@
 package h2d;
 
+import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
@@ -17,7 +20,7 @@ import h2d.common.Renderer;
 @SuppressWarnings("serial")
 public class H2DCanvas extends JComponent {
 
-	private final Image image;	
+	private Image image;	
 	private final List<ShapeHandler<?>> shapes = new ArrayList<>();
 	//zoom
 	private int pixelSize = 5;
@@ -25,8 +28,8 @@ public class H2DCanvas extends JComponent {
 	
 	public H2DCanvas() {
 		super();		
-		this.image = new ImageImpl(pixelSize, 200,200);
-		setSize(600, 600);		
+		setPreferredSize(new Dimension(1000, 800));		
+		this.image = new ImageImpl(pixelSize, 1000, 800);
 		addMouseMotionListener(new MouseMotionAdapter() {
 			public void mouseDragged(MouseEvent e) {
 				if (eventListener!=null) {
@@ -42,14 +45,24 @@ public class H2DCanvas extends JComponent {
 					onStateChange();
 	        	}	
 	        }
-
 	        public void mouseReleased(MouseEvent e) {
 	        	if (eventListener!=null) {
 	        		eventListener.onMouseReleased(e, eventToPoint(e), H2DCanvas.this);
 					onStateChange();
 	        	}	
 	        }
-		});			
+		});	
+		addComponentListener(new ComponentAdapter() {
+			@Override
+			public void componentResized(ComponentEvent e) {			
+				super.componentResized(e);
+				reinitImage();
+			}			
+		});
+	}
+	
+	private void reinitImage() {
+		this.image = new ImageImpl(pixelSize, getWidth(), getHeight());
 		onStateChange();
 	}
 
