@@ -1,6 +1,5 @@
 package h2d.common;
 
-import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -11,15 +10,7 @@ public class PolygonRenderer implements Renderer<Polygon> {
 	private static final Logger log = Logger.getLogger("Polygon");
 	
 	private final Renderer<Line> lineRenderer;
-	private final Renderer<Line> backgroundRenderer;
-	
-	public PolygonRenderer() {
-		this(Color.RED, Color.GREEN);
-	}
-	
-	public PolygonRenderer(Color color, Color background) {
-		this(new LineRendererDDA(color), background!=null?new LineRendererDDA(background):null);
-	}
+	private final Renderer<Line> backgroundRenderer;	
 	
 	public PolygonRenderer(Renderer<Line> lineRenderer, Renderer<Line> backgroundRenderer) {
 		super();

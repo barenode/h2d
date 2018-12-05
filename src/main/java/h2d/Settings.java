@@ -2,7 +2,7 @@ package h2d;
 
 import java.awt.Color;
 
-public class Settings {
+public class Settings implements Cloneable {
 
 	private int pixelSize = 4;
 	private Color color = Color.RED;
@@ -51,4 +51,13 @@ public class Settings {
 		Quadrantal,
 		Bresenham
 	}
+
+	@Override
+	protected Object clone() {
+		try {
+			return super.clone();
+		} catch (CloneNotSupportedException e) {
+			throw new IllegalStateException(e);
+		}
+	}	
 }

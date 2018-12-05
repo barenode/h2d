@@ -8,6 +8,8 @@ import java.util.List;
 import javax.swing.SwingUtilities;
 
 import h2d.common.Image;
+import h2d.common.Line;
+import h2d.common.LineRendererFactory;
 import h2d.common.Point;
 import h2d.common.PointRenderer;
 import h2d.common.Polygon;
@@ -16,19 +18,16 @@ import h2d.common.Renderer;
 
 public class PolygonController implements H2DCanvas.EventListener {
 	
+	private final Settings settings;
+	private final List<Point> points = new ArrayList<>();	
+	
 	private Renderer<Point> pointRenderer = new PointRenderer(Color.RED);
-	private Renderer<Polygon> polygonRenderer = new PolygonRenderer();
+	private Renderer<Polygon> polygonRenderer;	
 	
-	private List<Point> points = new ArrayList<>();
-	
-	public PolygonController() {
-		this(Color.RED, Color.GREEN);
-	}
-	
-	public PolygonController(Color color, Color background) {
+	public PolygonController(Settings settings) {
 		super();
-		this.pointRenderer = new PointRenderer(color);
-		this.polygonRenderer = new PolygonRenderer(color, background);
+		this.settings = settings;
+		onStateChanged();
 	}
 	
 	@Override
@@ -65,5 +64,24 @@ public class PolygonController implements H2DCanvas.EventListener {
 	
 	protected void clear() {
 		points.clear();
+	}
+	
+	@Override
+	public void onStateChanged() {
+		clear();
+		LineRendererFactory factory = new LineRendererFactory();
+		Renderer<Line> lineRenderer = factory.create(settings.getLineAlgorithm(), settings.getColor());
+		Renderer<Line> backgroundRenderer = null;
+		if (settings.getBackground()!=null) {
+			backgroundRenderer = factory.create(settings.getLineAlgorithm(), settings.getBackground());
+		}
+		polygonRenderer = new PolygonRenderer(
+			lineRenderer,
+			backgroundRenderer);
+	}
+	
+	@Override
+	public String getHint() {
+		return "Stisknutím levého tlačítka myši přidáte další bod n-úhelníku. Stisknutím pravého tlačítka myši dokončíte n-úhelník.";		
 	}
 }

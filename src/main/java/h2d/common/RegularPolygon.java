@@ -7,13 +7,13 @@ import transforms.Mat3Rot2D;
 import transforms.Point2D;
 import transforms.Vec2D;
 
-public class NAngle {
+public class RegularPolygon {
 
 	private final Point centre;
 	private final Point origin;
 	private final int size;
 	
-	public NAngle(
+	public RegularPolygon(
 		Point centre,
 		Point origin,
 		int size) 
@@ -31,6 +31,10 @@ public class NAngle {
 	public int getSize() {
 		return size;
 	}	
+	
+	public RegularPolygon withSize(int newSize) {
+		return new RegularPolygon(centre, origin, newSize);
+	} 
 	
 	public Polygon asPolygon() {
 		final Vec2D c =  centre.toVec();

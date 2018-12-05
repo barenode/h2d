@@ -2,30 +2,32 @@ package h2d;
 
 import java.awt.Color;
 import java.awt.event.MouseEvent;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.swing.SwingUtilities;
 
-import org.apache.log4j.Logger;
-
 import h2d.common.Image;
-import h2d.common.Line;
+import h2d.common.LineRendererFactory;
 import h2d.common.Point;
 import h2d.common.Polygon;
 import h2d.common.PolygonIntersection;
 import h2d.common.PolygonRenderer;
 
-public class PolygonIntersectionController implements H2DCanvas.EventListener {
-	private static final Logger logger = Logger.getLogger(PolygonIntersectionController.class);
+public class PolygonIntersectionController implements H2DCanvas.EventListener {	
+	
+	private final Settings settings;
 	
 	private Polygon clippingPolygon;
 	private Polygon clippedPolygon;
-	private Polygon intersected;
+	private Polygon intersected;	
+	private PolygonRenderer intersectedRenderer;
 	
-	private PolygonRenderer intersectedRenderer = new PolygonRenderer(Color.MAGENTA, Color.DARK_GRAY);
+	private H2DCanvas.EventListener state;
 	
-	private H2DCanvas.EventListener state = new ClippingPygonState();
+	public PolygonIntersectionController(Settings settings) {
+		super();
+		this.settings = settings;
+		onStateChanged();
+	}
 	
 	@Override
 	public void onMousePressed(MouseEvent e, Point point, H2DCanvas canvas) {
@@ -47,10 +49,36 @@ public class PolygonIntersectionController implements H2DCanvas.EventListener {
 		state.render(image);
 	}	
 	
+	@Override
+	public void onStateChanged() {
+		clippingPolygon = null;
+		clippedPolygon = null;
+		intersected = null;
+		LineRendererFactory factory = new LineRendererFactory();
+		intersectedRenderer = new PolygonRenderer(
+			factory.create(settings.getLineAlgorithm(), settings.getColor()),
+			factory.create(settings.getLineAlgorithm(), settings.getBackground()));
+		clipingPolygonState();
+	}
+	
+	private void clipingPolygonState() {
+		Settings clipingPolygonSettings = (Settings)settings.clone();
+		clipingPolygonSettings.setColor(Color.GRAY);
+		clipingPolygonSettings.setBackground(null);
+		state = new ClippingPygonState(clipingPolygonSettings);	
+	}
+	
+	private void clippedPolygonState() {
+		Settings clippedPolygonSettings = (Settings)settings.clone();
+		clippedPolygonSettings.setColor(Color.MAGENTA);
+		clippedPolygonSettings.setBackground(null);
+		state = new ClippedPygonState(clippedPolygonSettings);
+	}
+	
 	private class ClippingPygonState extends PolygonController {		
 
-		public ClippingPygonState() {
-			super(Color.GRAY, null);
+		public ClippingPygonState(Settings settings) {
+			super(settings);
 		}
 		
 		@Override
@@ -59,8 +87,7 @@ public class PolygonIntersectionController implements H2DCanvas.EventListener {
 				//check polygon
 				if (getPoints().size()>1) {
 					clippingPolygon = new Polygon(getPoints());
-					System.out.println("clippingPolygon: " + clippingPolygon);
-					state = new ClippedPygonState();
+					clippedPolygonState();
 				}
 			} 
 			super.onMouseReleased(e, point, canvas);			
@@ -69,8 +96,8 @@ public class PolygonIntersectionController implements H2DCanvas.EventListener {
 	
 	private class ClippedPygonState extends PolygonController {		
 
-		public ClippedPygonState() {
-			super(Color.YELLOW, null);
+		public ClippedPygonState(Settings settings) {
+			super(settings);
 		}
 		
 		@Override
@@ -89,7 +116,7 @@ public class PolygonIntersectionController implements H2DCanvas.EventListener {
 				clippingPolygon = null;
 				clippedPolygon = null;
 				intersected = null;	
-				state = new ClippingPygonState();
+				clipingPolygonState();
 				super.onMouseReleased(e, point, canvas);			
 			}			
 		}		
@@ -101,40 +128,10 @@ public class PolygonIntersectionController implements H2DCanvas.EventListener {
 				intersectedRenderer.render(intersected, image);
 			}
 		}
-
-//		private void createIntersection() {
-//			logger.info("==================================================");
-//			logger.info("clippingPolygon: " + clippingPolygon);
-//			intersected = new Polygon(clippedPolygon.getPoints());
-//			List<Point> points = new ArrayList<>();
-//			for (Line edge : clippingPolygon.getEdges()) {				
-//				logger.info("intersected: " + intersected);
-//				for (Line e : intersected.getEdges()) {
-//					logger.info("Checking " + edge + " with " + e);
-//					if (edge.isInside(e.getEnd())) {
-//						logger.info(" End inside");
-//						if (!edge.isInside(e.getOrigin())) {
-//							logger.info(" Origin not inside");
-//							Point intersection = edge.getIntersection(e);
-//							logger.info(" Intersection " + intersection);
-//							if (intersection!=null) {
-//								points.add(intersection);
-//							}							
-//						}	
-//						points.add(e.getEnd());
-//					} else {
-//						if (edge.isInside(e.getOrigin())) {
-//							logger.info(" Origin inside");
-//							points.add(e.getOrigin());
-//						}						
-//					}
-//				}
-//				logger.info(" Result: " + points);
-//				if (points.size()>2) {
-//					intersected = new Polygon(points);
-//				}			
-//				points.clear();
-//			}
-//		}
 	}	
+	
+	@Override
+	public String getHint() {
+		return "Táhnutím vytvoříte přímku mezi dvěma body";		
+	}
 }

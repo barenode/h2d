@@ -78,6 +78,12 @@ public class H2DCanvas extends JComponent {
 			eventListener.render(image);
 		}
 		image.draw(g);
+		if (eventListener!=null) {
+			String hint = eventListener.getHint();
+			if (hint!=null) {
+				g.drawString(hint, 20, 20);
+			}
+		}		
 	}
 	
 	public <T> void add(ShapeHandler<T> shape) {
@@ -85,12 +91,36 @@ public class H2DCanvas extends JComponent {
 		onStateChange();
 	}
 	
-	public void onStateChange() {
+	public void clear() {
+		shapes.clear();
+		if (eventListener!=null) {
+			eventListener.onStateChanged();
+		}
+		onStateChange();
+	}
+	
+	public void onSettingChanged() {	
+		if (eventListener!=null) {
+			eventListener.onStateChanged();
+		}
+		onStateChange();
+	}
+	
+	public void onStateChange() {		
 		repaint();
+	}
+	
+	public void setPixelSize(int pixelSize) {
+		this.pixelSize = pixelSize;
+		if (eventListener!=null) {
+			eventListener.onStateChanged();
+		}
+		reinitImage();
 	}
 
 	public void setEventListener(H2DCanvas.EventListener eventListener) {
 		this.eventListener = eventListener;
+		onStateChange();
 	}
 	
 	//helpers
@@ -128,6 +158,8 @@ public class H2DCanvas extends JComponent {
 	
 	
 	public interface EventListener {
+		
+		void onStateChanged();
 
 		void onMousePressed(MouseEvent e, Point point, H2DCanvas canvas);
 		
@@ -136,5 +168,7 @@ public class H2DCanvas extends JComponent {
 		void onMouseReleased(MouseEvent e, Point point, H2DCanvas canvas);
 		
 		void render(Image image);
+		
+		String getHint();
 	}
 }

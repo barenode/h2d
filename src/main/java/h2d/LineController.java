@@ -1,20 +1,26 @@
 package h2d;
 
-import java.awt.Color;
 import java.awt.event.MouseEvent;
 
 import h2d.common.Image;
 import h2d.common.Line;
-import h2d.common.LineRendererDDAQuadrantal;
+import h2d.common.LineRendererFactory;
 import h2d.common.Point;
 import h2d.common.Renderer;
 
 public class LineController implements H2DCanvas.EventListener {
-
-	private Renderer<Line> renderer = new LineRendererDDAQuadrantal(Color.CYAN);
 	
+	private final Settings settings;
+	
+	private Renderer<Line> renderer;	
 	private Point origin;
-	private Point end;
+	private Point end;		
+	
+	public LineController(Settings settings) {
+		super();
+		this.settings = settings;
+		onStateChanged();
+	}
 	
 	@Override
 	public void onMousePressed(MouseEvent e, Point point, H2DCanvas canvas) {
@@ -41,5 +47,17 @@ public class LineController implements H2DCanvas.EventListener {
 		if (origin!=null && end!=null) {
 			renderer.render(new Line(origin, end), image);
 		}	
+	}
+	
+	@Override
+	public void onStateChanged() {
+		origin = null;
+		end = null;
+		renderer = new LineRendererFactory().create(settings.getLineAlgorithm(), settings.getColor());
+	}
+	
+	@Override
+	public String getHint() {
+		return "Táhnutím vytvoříte přímku mezi dvěma body";		
 	}
 }

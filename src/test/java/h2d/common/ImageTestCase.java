@@ -43,7 +43,7 @@ public class ImageTestCase extends TestCase {
 		
 		ImageImpl image = new ImageImpl(8, 100, 100);
 		
-		new PolygonRenderer().render(new NAngle(new Point(40, 40), new Point(50, 45), 5).asPolygon(), image);
+//		new PolygonRenderer().render(new RegularPolygon(new Point(40, 40), new Point(50, 45), 5).asPolygon(), image);
 		
 //		Polygon polygon = new Polygon(Arrays.asList(
 //			new Point(5, 5), 
