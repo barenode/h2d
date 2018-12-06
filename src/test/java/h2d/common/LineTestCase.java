@@ -16,6 +16,17 @@ public class LineTestCase extends TestCase {
 		System.out.println(intersection);
 	} 
 	
+	
+	public void testOrthogonalIntersection() throws Exception {
+		Line line = new Line(2, 1, 2, 10);
+		assertEquals(new Point(2, 5), line.getIntersection(new Line(1, 5, 20, 5)));
+	}
+	
+//	public void testIntersection2() throws Exception {
+//		Line line = new Line(2, 2, 3, 10);
+//		assertEquals(new Point(2, 5), line.getIntersection(new Line(2, 2, 3, 10)));
+//	}
+	
 //	public void testAngle() throws Exception {
 //		double sine;
 //		

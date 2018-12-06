@@ -44,7 +44,7 @@ public class H2DApp extends JFrame {
 		//canvas
 		canvas = new H2DCanvas();
 		main.add(canvas, BorderLayout.CENTER);
-		canvas.setEventListener(new RegularPolygonController(settings));
+		canvas.setEventListener(new SeedFillController(settings));
 		//pack();
 	}
 	
@@ -158,6 +158,9 @@ public class H2DApp extends JFrame {
 			add(excersise2);
 			//seed fill
 			JToggleButton seedFillControllerButton = new JToggleButton("Semínkové vyplnění");
+			seedFillControllerButton.addActionListener(e -> {
+				canvas.setEventListener(new SeedFillController(settings));
+			});			
 			excersise2.add(seedFillControllerButton);
 			controlButtons.add(seedFillControllerButton);
 			//polygon clip

@@ -2,6 +2,8 @@ package h2d;
 
 import java.awt.event.MouseEvent;
 
+import javax.swing.SwingUtilities;
+
 import h2d.common.Image;
 import h2d.common.Line;
 import h2d.common.LineRendererFactory;
@@ -24,22 +26,28 @@ public class LineController implements H2DCanvas.EventListener {
 	
 	@Override
 	public void onMousePressed(MouseEvent e, Point point, H2DCanvas canvas) {
-		origin = point;
+		if (SwingUtilities.isLeftMouseButton(e)) {
+			origin = point;
+		}
 	}
 
 	@Override
 	public void onMouseDragged(MouseEvent e, Point point, H2DCanvas canvas) {
-		end = point;
+		if (SwingUtilities.isLeftMouseButton(e)) {
+			end = point;
+		}
 	}
 
 	@Override
 	public void onMouseReleased(MouseEvent e, Point point, H2DCanvas canvas) {
-		end = point;
-		if (!end.equals(origin)) {
-			canvas.add(new H2DCanvas.ShapeHandler<Line>(new Line(origin, end), renderer));
+		if (SwingUtilities.isLeftMouseButton(e)) {
+			end = point;
+			if (!end.equals(origin)) {
+				canvas.add(new H2DCanvas.ShapeHandler<Line>(new Line(origin, end), renderer));
+			}
+			origin = null;
+			end = null;
 		}
-		origin = null;
-		end = null;
 	}
 
 	@Override
@@ -60,4 +68,8 @@ public class LineController implements H2DCanvas.EventListener {
 	public String getHint() {
 		return "Táhnutím vytvoříte přímku mezi dvěma body";		
 	}
+
+	public Settings getSettings() {
+		return settings;
+	}	
 }

@@ -121,13 +121,28 @@ public final class Line {
 	}
 	
 	public Point getIntersection(Line line) {
-		float k1 = getTangent();
-		float k2 = line.getTangent();
-		float q1 = getYIntercept();
-		float q2 = line.getYIntercept();
-		float xf = (q2-q1)/(k1-k2);		
-		float yf = q1 + k1*xf;		
+		final float k1 = getTangent();
+		final float k2 = line.getTangent();
+		final float q1 = getYIntercept();
+		final float q2 = line.getYIntercept();
+		log.debug("k1: " + k1);		
+		log.debug("k2: " + k2);
+		float xf, yf;
+		if (Float.isInfinite(k1)) {
+			xf = origin.getX();
+			yf = q2 + k2*xf;	
+		} else if (Float.isInfinite(k2)) {
+			xf = line.getOrigin().getX();
+			yf = q1 + k1*xf;	
+		} else {
+			xf = (q2-q1)/(k1-k2);		
+			yf = q1 + k1*xf;		
+		}
+
+
+
 		if (Float.isNaN(xf) || Float.isNaN(yf)) {
+			log.debug("ISNAN");
 			return null;
 		}
 		int x = Math.round(xf);

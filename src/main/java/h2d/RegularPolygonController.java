@@ -2,7 +2,6 @@ package h2d;
 
 import java.awt.Color;
 import java.awt.event.MouseEvent;
-import java.util.ArrayList;
 
 import h2d.common.Image;
 import h2d.common.LineRendererFactory;

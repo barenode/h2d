@@ -61,6 +61,11 @@ public class PolygonIntersectionController implements H2DCanvas.EventListener {
 		clipingPolygonState();
 	}
 	
+	@Override
+	public String getHint() {
+		return state.getHint();
+	}
+	
 	private void clipingPolygonState() {
 		Settings clipingPolygonSettings = (Settings)settings.clone();
 		clipingPolygonSettings.setColor(Color.GRAY);
@@ -91,6 +96,13 @@ public class PolygonIntersectionController implements H2DCanvas.EventListener {
 				}
 			} 
 			super.onMouseReleased(e, point, canvas);			
+		}
+		
+		@Override
+		public String getHint() {
+			return 
+				"Stisknutím levého tlačítka myši přidáte další bod ořezávajícího n-úhelníku. Stisknutím pravého tlačítka myši dokončíte ořezávající n-úhelník." + 
+				"Ořezávající n-úhelník musí být konvexní!";		
 		}
 	}	
 	
@@ -128,10 +140,10 @@ public class PolygonIntersectionController implements H2DCanvas.EventListener {
 				intersectedRenderer.render(intersected, image);
 			}
 		}
-	}	
-	
-	@Override
-	public String getHint() {
-		return "Táhnutím vytvoříte přímku mezi dvěma body";		
+		
+		@Override
+		public String getHint() {
+			return "Stisknutím levého tlačítka myši přidáte další bod ořezávaného n-úhelníku. Stisknutím pravého tlačítka myši dokončíte ořezávaný n-úhelník.";		
+		}
 	}
 }

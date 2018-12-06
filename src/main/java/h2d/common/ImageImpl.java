@@ -1,6 +1,7 @@
 package h2d.common;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
@@ -14,7 +15,7 @@ import org.apache.log4j.Logger;
  * @author hylmar
  */
 public class ImageImpl implements Image {
-	private static final Logger log = Logger.getLogger("Image");
+	private static final Logger log = Logger.getLogger("Image");	
 	
 	private final int pixelSize;
 	private final int width;
@@ -22,12 +23,14 @@ public class ImageImpl implements Image {
 	private final int height;
 	private final int imageHeight;
 	private final BufferedImage image;
+	private final Dimension dimension;
 	
 	public ImageImpl(int pixelSize, int imageWidth, int imageHeight) {
 		super();
 		this.pixelSize = pixelSize;
 		this.width = (imageWidth/pixelSize)+1;
 		this.height = (imageHeight/pixelSize)+1;
+		this.dimension = new Dimension(width, height);
 		this.imageWidth = to2D(width);
 		this.imageHeight = to2D(height);
 		this.image = new BufferedImage(imageWidth+10, imageHeight+10, BufferedImage.TYPE_INT_ARGB);
@@ -51,6 +54,15 @@ public class ImageImpl implements Image {
 		}
 	}	
 	
+	@Override
+	public Color color(int x, int y) {
+		return new Color(image.getRGB(to2D(x), to2D(y)));
+	}
+	
+	public Dimension getDimension() {
+		return dimension;
+	}
+	
 	private int to2D(int value) {
 		return value*pixelSize;
 	}
@@ -64,7 +76,7 @@ public class ImageImpl implements Image {
 	public void clear() {
 		Graphics2D g2 = (Graphics2D)image.getGraphics();
 		g2.setColor(Color.RED);
-		g2.setBackground(new Color(255, 255, 255, 0));		
+		g2.setBackground(BACKGROUND);		
 		image.getGraphics().fillRect(0, 0, to2D(width), to2D(height));
 	}
 	
@@ -73,4 +85,6 @@ public class ImageImpl implements Image {
 	{
 		ImageIO.write(image, "jpg", new File("./" + name + ".jpg"));
 	}
+
+
 }
