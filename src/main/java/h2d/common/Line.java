@@ -125,8 +125,6 @@ public final class Line {
 		final float k2 = line.getTangent();
 		final float q1 = getYIntercept();
 		final float q2 = line.getYIntercept();
-		log.debug("k1: " + k1);		
-		log.debug("k2: " + k2);
 		float xf, yf;
 		if (Float.isInfinite(k1)) {
 			xf = origin.getX();
@@ -138,18 +136,12 @@ public final class Line {
 			xf = (q2-q1)/(k1-k2);		
 			yf = q1 + k1*xf;		
 		}
-
-
-
-		if (Float.isNaN(xf) || Float.isNaN(yf)) {
-			log.debug("ISNAN");
+		if (Float.isNaN(xf) || Float.isNaN(yf)) {		
 			return null;
 		}
 		int x = Math.round(xf);
 		int y = Math.round(yf);
-		if (log.isDebugEnabled()) {
-			log.debug("Intersection of " + this + " with " + line + " is [" + x + ", " + y + "].");
-		}
+		
 		if (origin.getX()<end.getX()) {
 			if (x<origin.getX() || x>end.getX()) {
 				return null;
@@ -187,6 +179,31 @@ public final class Line {
 				return null;
 			}
 		}		
+		return new Point(x, y);
+	}
+	
+	public Point getIntersectionUnounded(Line line) {
+		final float k1 = getTangent();
+		final float k2 = line.getTangent();
+		final float q1 = getYIntercept();
+		final float q2 = line.getYIntercept();
+		float xf, yf;
+		if (Float.isInfinite(k1)) {
+			xf = origin.getX();
+			yf = q2 + k2*xf;	
+		} else if (Float.isInfinite(k2)) {
+			xf = line.getOrigin().getX();
+			yf = q1 + k1*xf;	
+		} else {
+			xf = (q2-q1)/(k1-k2);		
+			yf = q1 + k1*xf;		
+		}
+		if (Float.isNaN(xf) || Float.isNaN(yf)) {		
+			return null;
+		}
+		int x = Math.round(xf);
+		int y = Math.round(yf);		
+				
 		return new Point(x, y);
 	}
 	
