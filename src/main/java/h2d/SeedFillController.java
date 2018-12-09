@@ -27,6 +27,6 @@ public class SeedFillController extends LineController {
 
 	@Override
 	public String getHint() {
-		return "";
+		return "Stisknutím levého tlačítka myši a táhnutím přidáte ohraničení. Stisknutím pravého tlačítka vyplníte vybranou oblast.";
 	}		
 }
