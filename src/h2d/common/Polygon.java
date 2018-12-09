@@ -18,7 +18,7 @@ public class Polygon {
 	public Polygon(List<Point> points) {
 		super();
 		if (points.size()<2) {
-			throw new IllegalArgumentException("Minimum points to construct polygin is 2!");
+			throw new IllegalArgumentException("Minimum points to construct polygon is 2!");
 		}
 		this.points = new ArrayList<>(points);
 	}
@@ -58,57 +58,8 @@ public class Polygon {
 			return Orientation.Clockwise;
 		} else {
 			return Orientation.CounterClockwise;
-		}
-		
-//		Orientation o = null;
-//		for (int i=0; i<points.size(); i++) {
-//			Point start = getPoint(i-1);
-//			Point pivot = getPoint(i);
-//			Point end = getPoint(i+1);
-//			System.out.println(start);
-//			System.out.println(pivot);
-//			System.out.println(end);
-//			double sine = new Line(start, pivot).sine(end);
-//			System.out.println(sine);
-//			if (sine>0d) {
-//				if (o==null) {
-//					o = Orientation.CounterClockwise;
-//				} else {
-//					if (o != Orientation.CounterClockwise) {
-//						o = Orientation.Mixed;
-//						break;
-//					}
-//				}
-//			} else if (sine<0d) {
-//				if (o==null) {
-//					o = Orientation.Clockwise;
-//				} else {
-//					if (o != Orientation.Clockwise) {
-//						o = Orientation.Mixed;
-//						break;
-//					}
-//				}
-//			}
-//		}
-//		if (o==null) {
-//			//whatever
-//			o = Orientation.CounterClockwise;
-//		}
-//		return o;		
-	}	
-	
-//	private Point getPoint(int index) {
-//		if (index==-1) {
-//			//last
-//			return points.get(points.size()-1);
-//		} else if (index==points.size()) {
-//			return points.get(0);
-//		} else {
-//			return points.get(index);
-//		}
-//	}
-	
-	
+		}	
+	}		
 	
 	public enum Orientation {
 		Clockwise,

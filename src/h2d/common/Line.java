@@ -60,15 +60,6 @@ public final class Line {
 			end.getY()-origin.getY());
 	}
 	
-//	public double angle(Point point) {
-//		System.out.println(cosine(point));
-//		return Math.acos(cosine(point));
-//	}
-//	
-//	public double sine(Point point) {
-//		return Math.sqrt(1d-Math.pow(cosine(point), 2));
-//	}
-	
 	public double cosine(Point point) {
 		Vec2D u = vector();
 		Vec2D v = new Line(end, point).vector();
@@ -87,34 +78,21 @@ public final class Line {
 		} else {
 			throw new IllegalArgumentException();
 		}
-		//Vec2D per = new Vec2D(t.getY(), -t.getX());
-		//Vec2D per = new Vec2D(-t.getY(), t.getX());
 		Vec2D p = point.toVec();
 		Vec2D v = p.sub(o);
 		double cos = v.normalized().get().dot(per.normalized().get());
 		double angle  = Math.acos(cos);
-		//System.out.println(angle);
 		return Math.abs(angle)<=HALF_PI;
 	}
 	
-	public Line trim() {		
-//		if (Math.abs(getTangent())>1) {
-			//lead by y
-			int yStep = 1;
-			if (end.getY()<origin.getY()) {
-				yStep = -1;
-			}
-			float newX = end.getX()-(1/getTangent());
-			return new Line(origin, new Point((int)newX, end.getY()-yStep));
-//		} else {
-//			//lead by x
-//			int xStep = 1;
-//			if (end.getX()<origin.getX()) {
-//				xStep = -1;
-//			}
-//			float newY = end.getY()-getTangent();
-//			return new Line(origin, new Point(end.getX()-xStep, (int)newY));
-//		}
+	public Line trim() {	
+		//lead by y
+		int yStep = 1;
+		if (end.getY()<origin.getY()) {
+			yStep = -1;
+		}
+		float newX = end.getX()-(1/getTangent());
+		return new Line(origin, new Point((int)newX, end.getY()-yStep));
 	}
 	
 	public Point getIntersection(Line line) {
