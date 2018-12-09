@@ -19,10 +19,7 @@ import javax.swing.JToolBar;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 
-import h2d.controller.LineController;
-import h2d.controller.PolygonController;
 import h2d.controller.PolygonIntersectionController;
-import h2d.controller.RegularPolygonController;
 import h2d.controller.SeedFillController;
 import h2d.view.ColorChooserButton;
 import h2d.view.H2DCanvas;
@@ -61,6 +58,37 @@ public class H2DApp extends JFrame {
 		SwingUtilities.invokeLater(()->{
 			new H2DApp().setVisible(true);
 		});
+	}
+	
+	class Excersises extends JPanel {
+		public Excersises() {
+			super();		
+			setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5)); 
+			setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+			ButtonGroup controlButtons = new ButtonGroup();
+			
+			//EXCERSISE 2
+			JPanel excersise2 = new JPanel();
+			excersise2.setLayout(new BoxLayout(excersise2, BoxLayout.Y_AXIS));
+			excersise2.setBorder(BorderFactory.createTitledBorder("Úloha 2")); 
+			add(excersise2);
+			//seed fill
+			JToggleButton seedFillControllerButton = new JToggleButton("Semínkové vyplnění");
+			seedFillControllerButton.addActionListener(e -> {
+				canvas.setEventListener(new SeedFillController(settings));
+			});	
+			seedFillControllerButton.setSelected(true);
+			
+			excersise2.add(seedFillControllerButton);
+			controlButtons.add(seedFillControllerButton);
+			//polygon clip
+			JToggleButton polyginClipControllerButton = new JToggleButton("Ořezání n-úhelníku");
+			polyginClipControllerButton.addActionListener(e -> {
+				canvas.setEventListener(new PolygonIntersectionController(settings));
+			});
+			excersise2.add(polyginClipControllerButton);
+			controlButtons.add(polyginClipControllerButton);
+		}
 	}
 	
 	class Toolbar extends JToolBar {
@@ -122,67 +150,7 @@ public class H2DApp extends JFrame {
 			});
 			add(backgroundChooser);		
 		}
-	}
-	
-	class Excersises extends JPanel {
-		public Excersises() {
-			super();		
-			setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5)); 
-			setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-			ButtonGroup controlButtons = new ButtonGroup();
-
-			//EXCERSISE 1
-			JPanel excersise1 = new JPanel();
-			excersise1.setLayout(new BoxLayout(excersise1, BoxLayout.Y_AXIS));
-			excersise1.setBorder(BorderFactory.createTitledBorder("Úloha 1")); 
-			add(excersise1);
-			//line			
-			JToggleButton lineControllerButton = new JToggleButton("Kreslení úsečky");			
-			lineControllerButton.addActionListener(e -> {
-				canvas.setEventListener(new LineController(settings));
-			});
-			excersise1.add(lineControllerButton);
-			controlButtons.add(lineControllerButton);
-			//polygon
-			JToggleButton polygonControllerButton = new JToggleButton("N-úhelník");
-			polygonControllerButton.addActionListener(e -> {
-				canvas.setEventListener(new PolygonController(settings));
-			});
-			excersise1.add(polygonControllerButton);
-			controlButtons.add(polygonControllerButton);
-			//excersise1.add(new SpaceHolder());
-			//regular polygon
-			JToggleButton regularPolygonControllerButton = new JToggleButton("Pravidelný n-úhelník");
-			regularPolygonControllerButton.addActionListener(e -> {
-				canvas.setEventListener(new RegularPolygonController(settings));
-			});
-			excersise1.add(regularPolygonControllerButton);
-			controlButtons.add(regularPolygonControllerButton);
-			//excersise1.add(new SpaceHolder());
-			
-			//EXCERSISE 1
-			JPanel excersise2 = new JPanel();
-			excersise2.setLayout(new BoxLayout(excersise2, BoxLayout.Y_AXIS));
-			excersise2.setBorder(BorderFactory.createTitledBorder("Úloha 2")); 
-			add(excersise2);
-			//seed fill
-			JToggleButton seedFillControllerButton = new JToggleButton("Semínkové vyplnění");
-			seedFillControllerButton.addActionListener(e -> {
-				canvas.setEventListener(new SeedFillController(settings));
-			});	
-			seedFillControllerButton.setSelected(true);
-			
-			excersise2.add(seedFillControllerButton);
-			controlButtons.add(seedFillControllerButton);
-			//polygon clip
-			JToggleButton polyginClipControllerButton = new JToggleButton("Ořezání n-úhelníku");
-			polyginClipControllerButton.addActionListener(e -> {
-				canvas.setEventListener(new PolygonIntersectionController(settings));
-			});
-			excersise2.add(polyginClipControllerButton);
-			controlButtons.add(polyginClipControllerButton);
-		}
-	}
+	}	
 	
 	public static class Settings implements Cloneable {
 
