@@ -16,10 +16,8 @@ import javax.imageio.ImageIO;
 public class ImageImpl implements Image {	
 	
 	private final int pixelSize;
-	private final int width;
-	private final int imageWidth;
-	private final int height;
-	private final int imageHeight;
+	private final int width;	
+	private final int height;	
 	private final BufferedImage image;
 	private final Dimension dimension;
 	
@@ -29,8 +27,6 @@ public class ImageImpl implements Image {
 		this.width = (imageWidth/pixelSize)+1;
 		this.height = (imageHeight/pixelSize)+1;
 		this.dimension = new Dimension(width, height);
-		this.imageWidth = to2D(width);
-		this.imageHeight = to2D(height);
 		this.image = new BufferedImage(imageWidth+10, imageHeight+10, BufferedImage.TYPE_INT_ARGB);
 		clear();
 	}
@@ -42,12 +38,7 @@ public class ImageImpl implements Image {
 		}
 		for (int i=to2D(x); i<to2D(x)+pixelSize;i++) {
 			for (int j=to2D(y); j<to2D(y)+pixelSize;j++) {
-			try {
-					this.image.setRGB(i, j, color.getRGB());
-				} catch (Exception e) {
-					System.out.println(image.getWidth() + ":" + image.getHeight());
-					System.out.println("Errosr to paint " + x + ":" + y + " - " + i + "/" + j + "[" + imageWidth + ":" + imageHeight + "]");
-				}
+				this.image.setRGB(i, j, color.getRGB());
 			}
 		}
 	}	
@@ -83,6 +74,4 @@ public class ImageImpl implements Image {
 	{
 		ImageIO.write(image, "jpg", new File("./" + name + ".jpg"));
 	}
-
-
 }
