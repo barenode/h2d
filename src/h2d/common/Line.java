@@ -1,12 +1,9 @@
 package h2d.common;
 
-import org.apache.log4j.Logger;
-
 import transforms.Mat3;
 import transforms.Vec2D;
 
 public final class Line {
-	private static final Logger log = Logger.getLogger("Bresenham");
 	private static final double HALF_PI = Math.PI/2d;
 	
 	private final Point origin;

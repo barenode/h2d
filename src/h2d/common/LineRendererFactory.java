@@ -2,7 +2,8 @@ package h2d.common;
 
 import java.awt.Color;
 
-import h2d.Settings;
+import h2d.H2DApp.Settings;
+
 
 public class LineRendererFactory {
 

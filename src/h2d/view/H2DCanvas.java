@@ -1,4 +1,4 @@
-package h2d;
+package h2d.view;
 
 import java.awt.Dimension;
 import java.awt.Graphics;

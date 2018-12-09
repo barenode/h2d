@@ -9,13 +9,11 @@ import java.io.File;
 
 import javax.imageio.ImageIO;
 
-import org.apache.log4j.Logger;
 
 /**
  * @author hylmar
  */
-public class ImageImpl implements Image {
-	private static final Logger log = Logger.getLogger("Image");	
+public class ImageImpl implements Image {	
 	
 	private final int pixelSize;
 	private final int width;

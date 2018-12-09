@@ -2,10 +2,7 @@ package h2d.common;
 
 import java.awt.Color;
 
-import org.apache.log4j.Logger;
-
 public class LineRendererDDAQuadrantal implements Renderer<Line> {
-	private static final Logger log = Logger.getLogger("DDAQuadrantal");
 	
 	private final Color color;
 	
@@ -37,21 +34,8 @@ public class LineRendererDDAQuadrantal implements Renderer<Line> {
 		int y = y1;
 		int err = 0;
 		int xi = 0;
-		int yi = 0;
-		if (log.isDebugEnabled()) {
-			log.debug("======================");
-			log.debug("absdx: " + absdx);
-			log.debug("absdy: " + absdy);
-			log.debug("xStep: " + xStep);
-			log.debug("yStep: " + yStep);
-		}		
+		int yi = 0;	
 		while(xi<=absdx && yi<=absdy) {
-			if (log.isDebugEnabled()) {
-				log.debug("-----------------------");
-				log.debug("x: " + x);
-				log.debug("y: " + y);
-				log.debug("err: " + err);
-			}
 			image.pixel(x, y, color);
 			if(absdy==0 || err>0) {
 				x+=xStep;

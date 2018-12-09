@@ -1,4 +1,4 @@
-package h2d;
+package h2d.view;
 
 import java.awt.Color;
 import java.awt.Graphics2D;

@@ -1,11 +1,13 @@
-package h2d;
+package h2d.controller;
 
 import java.awt.event.MouseEvent;
 
 import javax.swing.SwingUtilities;
 
+import h2d.H2DApp.Settings;
 import h2d.common.Point;
 import h2d.common.SeedFillRenderer;
+import h2d.view.H2DCanvas;
 
 public class SeedFillController extends LineController {	
 	

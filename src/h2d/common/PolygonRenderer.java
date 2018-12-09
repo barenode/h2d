@@ -4,10 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.apache.log4j.Logger;
-
 public class PolygonRenderer implements Renderer<Polygon> {
-	private static final Logger log = Logger.getLogger("Polygon");
 	
 	private final Renderer<Line> lineRenderer;
 	private final Renderer<Line> backgroundRenderer;	
@@ -43,10 +40,7 @@ public class PolygonRenderer implements Renderer<Polygon> {
 				if (line.getEnd().getY()<line.getOrigin().getY()) {
 					line = line.flip();
 				}
-				line = line.trim();
-				if (log.isDebugEnabled()) {
-					log.debug(edge + " > " + line);
-				}
+				line = line.trim();	
 				lines.add(line);			
 			}		
 			for (int y=minY; y<=maxY; y++) {
@@ -61,13 +55,7 @@ public class PolygonRenderer implements Renderer<Polygon> {
 				
 				if (!intersections.isEmpty()) {
 					Collections.sort(intersections, Point.XSORT);
-					if (log.isDebugEnabled()) {
-						log.debug(yline + " intersections: " + intersections);
-					}
-					for (int i=0; i<intersections.size()/2; i++) {					
-						if (log.isDebugEnabled()) {
-							log.debug("fill line" + intersections.get(i*2) + intersections.get(i*2+1));
-						}
+					for (int i=0; i<intersections.size()/2; i++) {				
 						backgroundRenderer.render(new Line(intersections.get(i*2), intersections.get(i*2+1)), image);
 					}
 				}						

@@ -1,8 +1,3 @@
 eclipse.preferences.version=1
-encoding//src/main/java/h2d/CircleController.java=UTF-8
-encoding//src/main/java/h2d/H2DApp.java=UTF-8
-encoding//src/main/java/h2d/LineController.java=UTF-8
-encoding//src/main/java/h2d/PolygonController.java=UTF-8
-encoding//src/main/java/h2d/PolygonIntersectionController.java=UTF-8
-encoding//src/main/java/h2d/RegularPolygonController.java=UTF-8
-encoding//src/main/java/h2d/SeedFillController.java=UTF-8
+encoding//src/h2d/controller/CircleController.java=UTF-8
+encoding/<project>=UTF-8

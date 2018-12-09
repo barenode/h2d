@@ -6,17 +6,12 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Stack;
 
-import org.apache.log4j.Logger;
-
 public class SeedFillRenderer implements Renderer<Point> {
-	private static final Logger logger = Logger.getLogger(SeedFillRenderer.class);
 	
-	private final Color boundaryColor;
 	private final Color fillColor;	
 	
 	public SeedFillRenderer(Color boundaryColor, Color fillColor) {
 		super();
-		this.boundaryColor = boundaryColor;
 		this.fillColor = fillColor;
 	}
 	
@@ -85,10 +80,8 @@ public class SeedFillRenderer implements Renderer<Point> {
 	
 	private boolean fillPixel(int x, int y, Image image) {		
 		if (image.color(x, y).equals(Image.BACKGROUND)) {
-		//if (!image.color(x, y).equals(boundaryColor) && !image.color(x, y).equals(fillColor)) {
 			return true;
 		} else {
-			logger.debug("RGB: [" + x + ", " + y + "]: " + image.color(x, y));
 			return false;
 		}
 	}

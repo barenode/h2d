@@ -1,8 +1,9 @@
-package h2d;
+package h2d.controller;
 
 import java.awt.Color;
 import java.awt.event.MouseEvent;
 
+import h2d.H2DApp.Settings;
 import h2d.common.Image;
 import h2d.common.LineRendererFactory;
 import h2d.common.Point;
@@ -10,10 +11,11 @@ import h2d.common.Polygon;
 import h2d.common.PolygonRenderer;
 import h2d.common.RegularPolygon;
 import h2d.common.Renderer;
+import h2d.view.H2DCanvas;
 
 public class RegularPolygonController implements H2DCanvas.EventListener {	
 	
-	private final Settings settings;
+	private final Settings	 settings;
 	
 	private Renderer<Polygon> polygonRenderer;
 	private Point origin;
@@ -85,6 +87,7 @@ public class RegularPolygonController implements H2DCanvas.EventListener {
 		state = new AngleCountState();
 	}
 	
+	
 	private class PygonSizeState extends CircleController {
 
 		public PygonSizeState(Settings settings) {
@@ -110,7 +113,8 @@ public class RegularPolygonController implements H2DCanvas.EventListener {
 		}
 	}	
 	
-	class AngleCountState implements H2DCanvas.EventListener {
+	
+	private class AngleCountState implements H2DCanvas.EventListener {
 		
 		private Point origin;
 		private Point end;		

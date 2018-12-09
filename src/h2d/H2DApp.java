@@ -1,6 +1,7 @@
 package h2d;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.FlowLayout;
 
 import javax.swing.BorderFactory;
@@ -17,6 +18,14 @@ import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
+
+import h2d.controller.LineController;
+import h2d.controller.PolygonController;
+import h2d.controller.PolygonIntersectionController;
+import h2d.controller.RegularPolygonController;
+import h2d.controller.SeedFillController;
+import h2d.view.ColorChooserButton;
+import h2d.view.H2DCanvas;
 
 @SuppressWarnings("serial")
 public class H2DApp extends JFrame {
@@ -45,7 +54,7 @@ public class H2DApp extends JFrame {
 		canvas = new H2DCanvas();
 		main.add(canvas, BorderLayout.CENTER);
 		canvas.setEventListener(new SeedFillController(settings));
-		//pack();
+		pack();
 	}
 	
 	public static void main(String[] args) {
@@ -173,5 +182,65 @@ public class H2DApp extends JFrame {
 			excersise2.add(polyginClipControllerButton);
 			controlButtons.add(polyginClipControllerButton);
 		}
+	}
+	
+	public static class Settings implements Cloneable {
+
+		private int pixelSize = 4;
+		private Color color = Color.RED;
+		private Color background = Color.GREEN;
+		private LineAlogrithm lineAlgorithm = LineAlogrithm.DDA;
+		
+		public Settings() {
+			super();
+		}	
+		
+		public int getPixelSize() {
+			return pixelSize;
+		}
+
+		public void setPixelSize(int pixelSize) {
+			this.pixelSize = pixelSize;
+		}
+
+		public Color getColor() {
+			return color;
+		}
+
+		public void setColor(Color color) {
+			this.color = color;
+		}
+
+		public Color getBackground() {
+			return background;
+		}
+
+		public void setBackground(Color background) {
+			this.background = background;
+		}
+
+		public LineAlogrithm getLineAlgorithm() {
+			return lineAlgorithm;
+		}
+
+		public void setLineAlgorithm(LineAlogrithm lineAlgorithm) {
+			this.lineAlgorithm = lineAlgorithm;
+		}
+
+		public static enum LineAlogrithm {		
+			Trivial,
+			DDA,
+			Quadrantal,
+			Bresenham
+		}
+
+		@Override
+		public Object clone() {
+			try {
+				return super.clone();
+			} catch (CloneNotSupportedException e) {
+				throw new IllegalStateException(e);
+			}
+		}	
 	}
 }

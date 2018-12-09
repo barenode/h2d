@@ -1,16 +1,18 @@
-package h2d;
+package h2d.controller;
 
 import java.awt.Color;
 import java.awt.event.MouseEvent;
 
 import javax.swing.SwingUtilities;
 
+import h2d.H2DApp.Settings;
 import h2d.common.Image;
 import h2d.common.LineRendererFactory;
 import h2d.common.Point;
 import h2d.common.Polygon;
 import h2d.common.PolygonIntersection;
 import h2d.common.PolygonRenderer;
+import h2d.view.H2DCanvas;
 
 public class PolygonIntersectionController implements H2DCanvas.EventListener {	
 	
