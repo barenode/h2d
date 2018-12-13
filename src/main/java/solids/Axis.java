@@ -4,7 +4,7 @@ import java.awt.Color;
 
 import transforms.Point3D;
 
-public class Axis extends SolidData {
+public class Axis extends SolidBase {
 
     public Axis() {
     	super();

@@ -11,7 +11,6 @@ import javax.swing.JComponent;
 
 import h2d.common.Image;
 import h2d.common.ImageImpl;
-import h3d.common.Transformer;
 import solids.Solid;
 import transforms.Camera;
 import transforms.Mat4PerspRH;

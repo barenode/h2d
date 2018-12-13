@@ -39,6 +39,10 @@ public class ImageTestCase extends TestCase {
 		new Line(5, 0, 10, 10)
 	};
 
+	public void testCast() throws Exception {
+		assertEquals(5, (int)5.9d);
+	}
+	
 	public void test() throws Exception {
 		
 		ImageImpl image = new ImageImpl(8, 100, 100);

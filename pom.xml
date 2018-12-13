@@ -8,6 +8,10 @@
   <packaging>jar</packaging>  
   <name>Hylmar 2D</name>
 
+  <!--
+     1: e070c657-7726-4519-b4ea-3b080fa89517
+     2: d809ad4b-5a10-4591-a1c5-54589814bc9a
+  -->
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.source>1.8</maven.compiler.source>

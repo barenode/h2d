@@ -5,6 +5,7 @@ import java.util.Comparator;
 import transforms.Mat3;
 import transforms.Point2D;
 import transforms.Vec2D;
+import transforms.Vec3D;
 
 /**
  * @author hylmar
@@ -56,7 +57,11 @@ public class Point {
 	}
 	
 	public static Point fromVec(Vec2D vec) {
-		return new Point((int)Math.round(vec.getX()), (int)Math.round(vec.getY()));
+		return new Point((int)vec.getX(), (int)vec.getY());
+	}
+	
+	public static Point fromVec(Vec3D vec) {
+		return new Point((int)vec.getX(), (int)vec.getY());
 	}
 
 	@Override

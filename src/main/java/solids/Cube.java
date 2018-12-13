@@ -2,7 +2,7 @@ package solids;
 
 import transforms.Point3D;
 
-public class Cube extends SolidData {
+public class Cube extends SolidBase {
 
 
 		/*

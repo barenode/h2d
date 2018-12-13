@@ -4,14 +4,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 import transforms.Mat4;
+import transforms.Mat4Identity;
 import transforms.Point3D;
 
-public abstract class SolidData implements Solid {
+public abstract class SolidBase implements Solid {
 
     private final List<Point3D> verticies;
     private final List<Integer> indicies;
+    
+    private Mat4 transformation = new Mat4Identity();
 
-    public SolidData() {
+    public SolidBase() {
     	super();
         verticies = new ArrayList<>();
         indicies = new ArrayList<>();
@@ -26,8 +29,13 @@ public abstract class SolidData implements Solid {
     public List<Integer> getIndicies() {
         return indicies;
     }
-    
-    public void transform(Mat4 mat) {
-    	verticies.stream().forEach(p -> p.mul(mat));
-    }
+
+    @Override
+	public Mat4 getTransformation() {
+		return transformation;
+	}
+
+	public void setTransformation(Mat4 transformation) {
+		this.transformation = transformation;
+	}    
 }

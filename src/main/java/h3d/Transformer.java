@@ -1,4 +1,4 @@
-package h3d.common;
+package h3d;
 
 import java.awt.Color;
 import java.util.Optional;
@@ -36,7 +36,7 @@ public class Transformer {
             matFinal = model.mul(view).mul(projection);
         }
 
-        // první index: 1. bod, druhý index: druhý bod úsečky
+        // první index: 1. bod, druhý index: druhý bod úse�?ky
         for (int i = 0; i < solid.getIndicies().size(); i += 2) {
             Point3D p1 = solid.getVerticies().get(solid.getIndicies().get(i));
             Point3D p2 = solid.getVerticies().get(solid.getIndicies().get(i + 1));
@@ -62,7 +62,7 @@ public class Transformer {
         Vec3D v1 = vo1.get();
         Vec3D v2 = vo2.get();
 
-        // 4.) přepočet souřadnic na výšku/šírku našeho okna (viewport)
+        // 4.) přepo�?et souřadnic na výšku/šírku našeho okna (viewport)
         v1 = v1.mul(new Vec3D(1, 1, 1))
                 .add(new Vec3D(1, 1, 0))
                 .mul(new Vec3D(
@@ -85,12 +85,12 @@ public class Transformer {
     // metody vykreslování
     public void lineDDA(int x1, int y1, int x2, int y2, Color color) {
 
-        float k, g, h; //G = P�?ÍRŮSTEK X, H = P�?ÍRŮSTEK Y
+        float k, g, h; //G = P�?�?RŮSTEK X, H = P�?�?RŮSTEK Y
         int dy = y2 - y1;
         int dx = x2 - x1;
         k = dy / (float) dx;
 
-        //určení řídící osy
+        //ur�?ení řídící osy
         if (Math.abs(dx) > Math.abs(dy)) {
             g = 1;
             h = k;
@@ -105,7 +105,7 @@ public class Transformer {
         } else {
             g = 1 / k;
             h = 1;
-            if (y1 > y2) { //otočení
+            if (y1 > y2) { //oto�?ení
                 int temp = x1;
                 x1 = x2;
                 x2 = temp;
