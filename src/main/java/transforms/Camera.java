@@ -15,9 +15,9 @@ import java.util.Locale;
 public class Camera {
 	private final double azimuth, radius, zenith;
 	private final boolean firstPerson; // true -> 1st person, false -> 3rd person
-	private final Vec3D eye, pos, viewVector;
+	private final Vec3D eye, pos, viewVector, upVector;
 	private final Mat4 view;
-
+	
 	/**
 	 * Creates 1st person camera with observer positioned in the origin and
 	 * looking along the x-axis in positive direction (zero azimuth and zenith)
@@ -110,10 +110,10 @@ public class Camera {
 		this.zenith = zenith;
 		this.radius = radius;
 		this.firstPerson = firstPerson;
-		viewVector = new Vec3D((double) (Math.cos(azimuth) * Math.cos(zenith)),
+		this.viewVector = new Vec3D((double) (Math.cos(azimuth) * Math.cos(zenith)),
 				(double) (Math.sin(azimuth) * Math.cos(zenith)),
 				(double) Math.sin(zenith));
-		final Vec3D upVector = new Vec3D(
+		this.upVector = new Vec3D(
 				(double) (Math.cos(azimuth) * Math.cos(zenith + Math.PI / 2)),
 				(double) (Math.sin(azimuth) * Math.cos(zenith + Math.PI / 2)),
 				(double) Math.sin(zenith + Math.PI / 2));
@@ -214,6 +214,10 @@ public class Camera {
 	 */
 	public Vec3D getEye() {
 		return eye;
+	}	
+
+	public Vec3D getUpVector() {
+		return upVector;
 	}
 
 	/**

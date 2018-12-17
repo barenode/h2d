@@ -15,10 +15,14 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
+import org.apache.log4j.Logger;
+
 import solids.Axis;
 import solids.Cube;
 import solids.Solid;
 import transforms.Camera;
+import transforms.Mat4;
+import transforms.Mat4OrthoRH;
 import transforms.Mat4PerspRH;
 import transforms.Mat4RotY;
 import transforms.Mat4RotZ;
@@ -29,7 +33,8 @@ import transforms.Vec3D;
 import utils.Transformer;
 
 public class PgrfWireFrame extends JFrame {
-
+	private static final Logger logger = Logger.getLogger(PgrfWireFrame.class);
+	
     static int FPS = 1000 / 30;
     static int width = 800;
     static int height = 600;
@@ -41,6 +46,8 @@ public class PgrfWireFrame extends JFrame {
 
     private int beginX, beginY;
     private double moveX, moveY, moveZ;
+    
+    
 
     public static void main(String[] args) {
         PgrfWireFrame frame = new PgrfWireFrame();
@@ -58,7 +65,17 @@ public class PgrfWireFrame extends JFrame {
         add(panel);
         solids = new ArrayList<>();
         transformer = new Transformer(img);
-        transformer.setProjection(new Mat4PerspRH(1, 1, 1, 100));
+        
+        Mat4OrthoRH ortho = new Mat4OrthoRH(
+        		2, 
+        		4, 
+        		0, 
+        		100);
+        
+        Mat4 persp = new Mat4PerspRH(1, 1, 1, 100);
+        
+        transformer.setProjection(persp);
+        transformer.setProjection(ortho);
         
         camera = new Camera();
 
@@ -68,8 +85,9 @@ public class PgrfWireFrame extends JFrame {
             for (int v = 0; v < cube.getVerticies().size(); v++) {
                 Point3D point3D = cube.getVerticies().get(v);
                 Point3D newPoint = point3D
-                        .mul(new Mat4Transl(0, 2, 0))
-                        .mul(new Mat4RotZ((double) i * 2d * Math.PI / (double) count));
+                        //.mul(new Mat4Transl(0, 2, 0))
+                        .mul(new Mat4RotZ((double) i * 2d * Math.PI / (double) count))
+                 ;
                 cube.getVerticies().set(v, newPoint);
             }
             solids.add(cube);
@@ -167,6 +185,12 @@ public class PgrfWireFrame extends JFrame {
         img.getGraphics().fillRect(0, 0, img.getWidth(), img.getHeight());
 
         //transformer.setModel(); // todo Ăşloha 3
+        
+		logger.info("========================================");
+		logger.info("Eye: " + 			camera.getEye());
+		logger.info("ViewVector: " + 	camera.getViewVector());
+		logger.info("UpVector: " + 	camera.getUpVector());
+		
         transformer.setView(camera.getViewMatrix());
 
         for (Solid solid : solids) {

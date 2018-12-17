@@ -39,6 +39,7 @@ public class ImageImpl implements Image {
 
 	@Override
 	public void pixel(int x, int y, Color color) {
+		y = height - y;
 		if (x<0 || y<0 || x>=width || y>=height) {
 			return;
 		}

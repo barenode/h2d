@@ -9,6 +9,6 @@ public class PipelineTestCase extends TestCase {
 		Scene scene = new Scene();
 		scene.add(new Cube(10d));
 		
-		new Pipeline().accept(scene);
+		//new Pipeline().accept(scene);
 	}
 }

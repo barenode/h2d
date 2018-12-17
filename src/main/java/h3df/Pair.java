@@ -14,4 +14,9 @@ public class Pair<T> {
 	public static <K> Pair<K> of(K first, K second) {
 		return new Pair<>(first, second);
 	}
+	
+	@Override
+	public String toString() {
+		return "(" + first + "; " + second + ") ";
+	}
 }

@@ -42,7 +42,9 @@ public interface Solid {
     default List<Pair<Point3D>> getEdges() {
     	List<Pair<Point3D>> result = new ArrayList<>();
     	for (int i = 0; i < getIndicies().size(); i += 2) {
-    		result.add(Pair.of(getVerticies().get(i), getVerticies().get(i=1)));
+    		result.add(Pair.of(
+    			getVerticies().get(getIndicies().get(i)), 
+    			getVerticies().get(getIndicies().get(i+1))));
     	}
     	return result;
     }    
