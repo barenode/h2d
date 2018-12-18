@@ -33,11 +33,11 @@ import transforms.Vec3D;
 public class Scene extends JComponent implements ActionListener {
 	private static final Logger logger = Logger.getLogger(Scene.class);
 	
-	private static final Vec3D WT_1 = new Vec3D(1, 1, 1);
+	private static final Vec3D WT_1 = new Vec3D(1, -1, 1);
 	private static final Vec3D WT_2 = new Vec3D(1, 1, 0);
 	
 	private Camera camera = new Camera();
-	private Image image = new ImageImpl(5, 500, 500);
+	private Image image = new ImageImpl(1, 800, 800);
 	private List<SceneParticipant> solids = new ArrayList<>();	
 	private Vec3D viewport = 
 //			new Vec3D(1, -1, 1).add(
@@ -49,17 +49,22 @@ public class Scene extends JComponent implements ActionListener {
 //			)
 			;
 	private Mat4OrthoRH ortho = new Mat4OrthoRH(
-		image.getDimension().getWidth(), 
-		image.getDimension().getHeight(), 
+		10, 
+		10, 
 		0, 
 		100);
 	
 	private Mat4 persp = new Mat4PerspRH(Math.PI/4, 1, 20, 100);
 	
 	private Mat4 view = new Mat4ViewRH(
+		new Vec3D(1, 1, 1), 
 		new Vec3D(0, 0, 0), 
-		new Vec3D(1, 0, 0), 
-		new Vec3D(0, 0, 1));
+		new Vec3D(0, -1, -1));
+	
+	private Mat4 view2 = new Mat4ViewRH(
+			new Vec3D(30, 0, 0), 
+			new Vec3D(-1, 0, 0), 
+			new Vec3D(0, 1, -0));
 	
 	private Renderer<Line> lineRenderer = new LineRendererDDA();
 	
@@ -67,6 +72,38 @@ public class Scene extends JComponent implements ActionListener {
 		super();
 	}
 	
+	public void resetCamera() {
+		camera = new Camera();
+	}
+	
+	public void forward(double step) {
+		camera = camera.forward(step);
+	}
+	
+	public void backward(double step) {
+		camera = camera.backward(step);
+	}
+	
+	public void left(double step) {
+		camera = camera.left(step);
+	}
+	
+	public void right(double step) {
+		camera = camera.right(step);
+	}
+	
+	public Camera getCamera() {
+		return camera;
+	}
+	
+	public void azimuth(double step) {
+		camera = camera.addAzimuth(step);
+	}
+	
+	public void zenith(double zenith) {
+		camera = camera.addZenith(zenith);
+	}
+
 	public void add(Solid solid) {
 		solids.add(new SceneParticipant(solid));
 	}
@@ -97,8 +134,8 @@ public class Scene extends JComponent implements ActionListener {
 	private Function<Point3D, Point3D> transform = (p) -> {
 		return p
 			//.mul(camera.getViewMatrix())
-			.mul(view)
-			.mul(persp)			
+			.mul(view2)
+			.mul(ortho)			
 			;			
 	};	
 

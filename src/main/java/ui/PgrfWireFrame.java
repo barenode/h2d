@@ -67,25 +67,29 @@ public class PgrfWireFrame extends JFrame {
         transformer = new Transformer(img);
         
         Mat4OrthoRH ortho = new Mat4OrthoRH(
-        		2, 
-        		4, 
-        		0, 
+        		10, 
+        		10, 
+        		1, 
         		100);
+        System.out.println(ortho);
         
-        Mat4 persp = new Mat4PerspRH(1, 1, 1, 100);
+        Mat4 persp = new Mat4PerspRH(Math.PI/2, 2, 10, 100);        
+        System.out.println(persp); 
         
         transformer.setProjection(persp);
-        transformer.setProjection(ortho);
+        //transformer.setProjection(ortho);
         
         camera = new Camera();
 
+        //{
+        //int i = 0;
         int count = 5;
         for (int i = 0; i < count; i++) {
             Cube cube = new Cube(1);
             for (int v = 0; v < cube.getVerticies().size(); v++) {
                 Point3D point3D = cube.getVerticies().get(v);
                 Point3D newPoint = point3D
-                        //.mul(new Mat4Transl(0, 2, 0))
+                        .mul(new Mat4Transl(0, 2, 0))
                         .mul(new Mat4RotZ((double) i * 2d * Math.PI / (double) count))
                  ;
                 cube.getVerticies().set(v, newPoint);

@@ -4,6 +4,8 @@ import transforms.Point3D;
 
 public class Cube extends SolidBase {
 
+	private final double halfSize;
+	
 
 		/*
            7______6
@@ -17,6 +19,7 @@ public class Cube extends SolidBase {
 
     public Cube(double size) {
     	super();
+    	halfSize = size/2.0;
     	
     	getVerticies().add(new Point3D(0, 0, 0));     // 0.
         getVerticies().add(new Point3D(0, size, 0));    // 1.
@@ -43,4 +46,10 @@ public class Cube extends SolidBase {
         getIndicies().add(2); getIndicies().add(6);
         getIndicies().add(3); getIndicies().add(7);
     }
+
+	@Override
+	public Point3D getCentroid() {
+		Point3D origin = getVerticies().get(0);
+		return new Point3D(origin.getX() + halfSize, origin.getY() + halfSize, origin.getZ() + halfSize, origin.getW());
+	}
 }

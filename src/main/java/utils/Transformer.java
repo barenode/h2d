@@ -52,7 +52,7 @@ public class Transformer {
         p2 = p2.mul(mat);
 
         // 2.) oĹ™ez dle W bodĹŻ
-        if (p1.getW() <= 0 && p2.getW() <= 0) return;
+        //if (p1.getW() <= 0 && p2.getW() <= 0) return;
 
         // 3.) tvorba z vektorĹŻ dehomogenizacĂ­ (Point3D.dehomog())
         Optional<Vec3D> vo1 = p1.dehomog();
@@ -65,14 +65,14 @@ public class Transformer {
         Vec3D v2 = vo2.get();
 
         // 4.) pĹ™epoÄŤet souĹ™adnic na vĂ˝Ĺˇku/ĹˇĂ­rku naĹˇeho okna (viewport)
-        v1 = v1.mul(new Vec3D(1, 1, 1))
+        v1 = v1.mul(new Vec3D(1, -1, 1))
                 .add(new Vec3D(1, 1, 0))
                 .mul(new Vec3D(
                         0.5 * (img.getWidth() - 1),
                         0.5 * (img.getHeight() - 1),
                         1));
 
-        v2 = v2.mul(new Vec3D(1, 1, 1))
+        v2 = v2.mul(new Vec3D(1, -1, 1))
                 .add(new Vec3D(1, 1, 0))
                 .mul(new Vec3D(
                         0.5 * (img.getWidth() - 1),

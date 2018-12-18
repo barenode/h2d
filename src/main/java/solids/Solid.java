@@ -8,12 +8,16 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
+import h2d.common.Line;
+import h2d.common.LineRendererDDA;
+import h2d.common.Renderer;
 import h3df.Pair;
 import transforms.Mat4;
 import transforms.Point3D;
 
 public interface Solid {
 	Logger logger = Logger.getLogger(Solid.class);
+	Renderer<Line> DEFAULT_RENDERER = new LineRendererDDA(Color.BLACK);
 	
     List<Point3D> getVerticies();
 
@@ -21,8 +25,10 @@ public interface Solid {
     
     Mat4 getTransformation();
     
-    default Color getColorByEdge(int index) {
-        return Color.BLACK;
+    Point3D getCentroid();
+    
+    default Renderer<Line> getEdgeRenderer(int index) {
+    	return DEFAULT_RENDERER;
     }
     
     default void transform() {

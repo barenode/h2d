@@ -38,4 +38,6 @@ public abstract class SolidBase implements Solid {
 	public void setTransformation(Mat4 transformation) {
 		this.transformation = transformation;
 	}    
+	
+	
 }

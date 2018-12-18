@@ -9,4 +9,9 @@ public class Point extends SolidBase {
 		getVerticies().add(new Point3D(0, 0, 0));
 		getIndicies().add(0); getIndicies().add(0);
 	}
+
+	@Override
+	public Point3D getCentroid() {
+		return getVerticies().get(0);
+	}
 }
