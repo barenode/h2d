@@ -42,7 +42,7 @@ public class Transformer {
         for (int i = 0; i < solid.getIndicies().size(); i += 2) {
             Point3D p1 = solid.getVerticies().get(solid.getIndicies().get(i));
             Point3D p2 = solid.getVerticies().get(solid.getIndicies().get(i + 1));
-            transformEdge(matFinal, p1, p2, solid.getColorByEdge(i / 2).getRGB());
+            transformEdge(matFinal, p1, p2, Color.BLACK.getRGB());
         }
     }
 

@@ -1,4 +1,4 @@
-package h3df;
+package h3g;
 
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
@@ -13,13 +13,13 @@ import javax.swing.JComponent;
 
 import org.apache.log4j.Logger;
 
-import h2d.H2DCanvas.ShapeHandler;
 import h2d.common.Image;
 import h2d.common.ImageImpl;
 import h2d.common.Line;
 import h2d.common.LineRendererDDA;
 import h2d.common.Point;
 import h2d.common.Renderer;
+import h3df.Pair;
 import solids.Solid;
 import transforms.Camera;
 import transforms.Mat4;
@@ -35,10 +35,11 @@ public class Scene extends JComponent implements ActionListener {
 	
 	private static final Vec3D WT_1 = new Vec3D(1, -1, 1);
 	private static final Vec3D WT_2 = new Vec3D(1, 1, 0);
-	
-	private Camera camera = new Camera();
+
 	private Image image = new ImageImpl(1, 800, 800);
+	
 	private List<SceneParticipant> solids = new ArrayList<>();	
+	
 	private Vec3D viewport = 
 //			new Vec3D(1, -1, 1).add(
 //			new Vec3D(1, 1, 0)).mul(
@@ -48,6 +49,7 @@ public class Scene extends JComponent implements ActionListener {
 				1)
 //			)
 			;
+
 	private Mat4OrthoRH ortho = new Mat4OrthoRH(
 		10, 
 		10, 
@@ -70,39 +72,8 @@ public class Scene extends JComponent implements ActionListener {
 	
 	public Scene() {
 		super();
-	}
-	
-	public void resetCamera() {
-		camera = new Camera();
-	}
-	
-	public void forward(double step) {
-		camera = camera.forward(step);
-	}
-	
-	public void backward(double step) {
-		camera = camera.backward(step);
-	}
-	
-	public void left(double step) {
-		camera = camera.left(step);
-	}
-	
-	public void right(double step) {
-		camera = camera.right(step);
-	}
-	
-	public Camera getCamera() {
-		return camera;
-	}
-	
-	public void azimuth(double step) {
-		camera = camera.addAzimuth(step);
-	}
-	
-	public void zenith(double zenith) {
-		camera = camera.addZenith(zenith);
-	}
+		setSize(800, 800);
+	}	
 
 	public void add(Solid solid) {
 		solids.add(new SceneParticipant(solid));
@@ -140,38 +111,30 @@ public class Scene extends JComponent implements ActionListener {
 	};	
 
 	private Supplier<List<Line>> pipeline = () -> {
-		logger.info("========================================");
-		logger.info("Eye: " + 			camera.getEye());
-		logger.info("ViewVector: " + 	camera.getViewVector());
-		logger.info("UpVector: " + 		camera.getUpVector());
-		logger.info("-------------------------------------");
-		logger.info("ViewMat:\n " + 		camera.getViewMatrix());
-		logger.info("-------------------------------------");
-		
 		return solids.stream()
 			.map(p -> p.solid())			
 			.map(s -> s.getEdges())			
 			.flatMap(e -> e.stream())
-			.peek(e -> {
-				logger.info("-------------------------------------");
-				logger.info("edge: " + e);
-			})
+//			.peek(e -> {
+//				logger.info("-------------------------------------");
+//				logger.info("edge: " + e);
+//			})
 			.map(e -> {
 				return Pair.of(
 					transform.apply(e.first),
 					transform.apply(e.second));
 			})
-			.peek(e -> {
-				logger.info("transformed: " + e);
-			})
+//			.peek(e -> {
+//				logger.info("transformed: " + e);
+//			})
 			.map(p -> {
 				return Pair.of(
 					p.first.dehomog(), 
 					p.second.dehomog());
 			})
-			.peek(e -> {
-				logger.info("dehomog: " + e);
-			})
+//			.peek(e -> {
+//				logger.info("dehomog: " + e);
+//			})
 			.filter(p -> {
 				return p.first.isPresent() && p.second.isPresent();
 			})
@@ -191,9 +154,9 @@ public class Scene extends JComponent implements ActionListener {
 					.add(WT_2)
 					.mul(viewport));
 			})
-			.peek(e -> {
-				logger.info("viewport: " + e);
-			})
+//			.peek(e -> {
+//				logger.info("viewport: " + e);
+//			})
 			.map(p -> {
 				return new Line(
 					Point.fromVec(p.first), 
