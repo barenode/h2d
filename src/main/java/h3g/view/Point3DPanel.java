@@ -23,9 +23,9 @@ public class Point3DPanel extends JPanel {
 	private Point3D point;
 	private ActionListener listener;
 	
-	public Point3DPanel(int index) {
+	public Point3DPanel(int index, String shape) {
 		super();		
-		setBorder(BorderFactory.createTitledBorder("bod " + index)); 
+		setBorder(BorderFactory.createTitledBorder("bod " + index + " (" + shape + ")")); 
 		add(new Label("x: "));
 		x = new JTextField("", 5);
 		x.getDocument().addDocumentListener(new Listener());

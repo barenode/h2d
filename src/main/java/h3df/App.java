@@ -95,8 +95,8 @@ public class App extends JFrame implements ActionListener {
 	}
 	
 	private void prepareScene() {
-		Cube solid1 = new Cube(2);
-		Spire solid2 = new Spire(4, 6);
+		Cube solid1 = new Cube();
+		Spire solid2 = new Spire();
 		Point  solid3 = new Point();
 		//cube.transform(new Mat4RotY(Math.PI / 10));		
 		
@@ -116,20 +116,20 @@ public class App extends JFrame implements ActionListener {
 		//solid.transform(new Mat4Transl(50, -30, 0));
 		scene.add(solid, t);
 		
-		Cube c2 = new Cube(2);
+		Cube c2 = new Cube();
 		c2.transform(new Mat4Transl(15, 0, 0));
 		scene.add(c2);
 		
-		Cube c3 = new Cube(2);
+		Cube c3 = new Cube();
 		c3.transform(new Mat4Transl(-15, 0, 0));
 		scene.add(c3);
 		
-		Cube c4 = new Cube(2);
+		Cube c4 = new Cube();
 		c4.transform(new Mat4Transl(-30, 0, 0));
 		scene.add(c4);
 		
 		
-		Axis axis = new Axis();
+		Axis axis = new Axis(5);
 		//axis.transform(new Mat4Scale(20));
 		scene.add(axis);
 //		Spire spire = new Spire(15, 10);

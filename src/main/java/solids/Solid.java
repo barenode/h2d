@@ -38,7 +38,7 @@ public interface Solid {
     default void transform(Mat4 mat) {
     	List<Point3D> transformed = getVerticies().stream().map(p -> {
     		Point3D t = p.mul(mat);
-    		logger.debug(p + " > " + t);
+//    		logger.debug(p + " > " + t);
     		return t;
     	}).collect(toList());
     	getVerticies().clear();

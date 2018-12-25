@@ -32,8 +32,8 @@ public class H3DApp extends JFrame {
 		canvas = new H3DCanvas();
 		main.add(canvas, BorderLayout.CENTER);
 
-		canvas.add(new Axis());
-		canvas.add(new Cube(1));
+		canvas.add(new Axis(3));
+		canvas.add(new Cube());
 		
 		addKeyListener(new KeyAdapter() {
             @Override

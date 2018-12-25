@@ -97,7 +97,7 @@ public class PgrfWireFrame extends JFrame {
             solids.add(cube);
         }
 
-        Axis axis = new Axis();
+        Axis axis = new Axis(4);
         for (int i = 0; i < axis.getVerticies().size(); i++) {
             Point3D point3D = axis.getVerticies().get(i);
             axis.getVerticies().set(i, point3D.mul(new Mat4Scale(3)));

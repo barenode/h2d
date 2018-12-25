@@ -3,6 +3,11 @@ package h3g;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
@@ -20,12 +25,16 @@ import h2d.common.LineRendererDDA;
 import h2d.common.Point;
 import h2d.common.Renderer;
 import h3df.Pair;
+import h3df.Utils;
 import solids.Solid;
 import transforms.Camera;
 import transforms.Mat4;
 import transforms.Mat4Identity;
 import transforms.Mat4OrthoRH;
 import transforms.Mat4PerspRH;
+import transforms.Mat4RotX;
+import transforms.Mat4RotY;
+import transforms.Mat4RotZ;
 import transforms.Mat4ViewRH;
 import transforms.Point3D;
 import transforms.Vec3D;
@@ -40,6 +49,15 @@ public class Scene extends JComponent implements ActionListener {
 	
 	private List<SceneParticipant> solids = new ArrayList<>();	
 	
+//	private Camera camera = new Camera(
+//		new Vec3D(40, 0, 0), 
+//		-Math.PI/2, 
+//		0.0, 
+//		0.0, 
+//		true);
+	
+	private Camera camera = new Camera(new Vec3D(-20.0, 0.0, 0.0), 0.0, 0.0, 1.0, true);
+	
 	private Vec3D viewport = 
 //			new Vec3D(1, -1, 1).add(
 //			new Vec3D(1, 1, 0)).mul(
@@ -50,13 +68,17 @@ public class Scene extends JComponent implements ActionListener {
 //			)
 			;
 
-	private Mat4OrthoRH ortho = new Mat4OrthoRH(
-		10, 
-		10, 
-		0, 
-		100);
+	Mat4OrthoRH ortho = new Mat4OrthoRH(
+			20, 
+			20, 
+			0, 
+			100);
 	
-	private Mat4 persp = new Mat4PerspRH(Math.PI/4, 1, 20, 100);
+	private Mat4 persp = new Mat4PerspRH(
+		Math.PI/4, 
+		1, 
+		20, 
+		100);
 	
 	private Mat4 view = new Mat4ViewRH(
 		new Vec3D(1, 1, 1), 
@@ -70,9 +92,79 @@ public class Scene extends JComponent implements ActionListener {
 	
 	private Renderer<Line> lineRenderer = new LineRendererDDA();
 	
+	private Mat4 model = new Mat4Identity();//(Math.PI / 10);
+	
+	
+	private int initialX;
+	private int initialY;
+	
 	public Scene() {
 		super();
 		setSize(800, 800);
+		
+//		camera = camera.withPosition(new Vec3D(0, 20, 5));
+//		camera = camera.withAzimuth(-3);
+//		camera = camera.withZenith(-0.5);
+		
+		// listeners
+        addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+            	initialX = e.getX();
+            	initialY = e.getY();
+                super.mousePressed(e);
+            }
+        });
+        addMouseMotionListener(new MouseMotionAdapter() {
+            @Override
+            public void mouseDragged(MouseEvent e) {
+                camera = camera.addAzimuth((Math.PI / 1000) * (initialX - e.getX()));
+                camera = camera.addZenith((Math.PI / 1000) * (initialY - e.getY()));
+                initialX = e.getX();
+                initialY = e.getY();
+                System.out.println(camera.getViewVector());
+                System.out.println(camera.getUpVector());
+                super.mouseDragged(e);
+            }
+        });
+		
+		addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                switch (e.getKeyCode()) {
+	                case KeyEvent.VK_UP:
+	                    camera = camera.forward(1d);
+	                    System.out.println("forward");
+	                    break;
+	                case KeyEvent.VK_DOWN:
+	                    camera = camera.backward(1d);
+	                    System.out.println("backward");
+	                    break;
+	                case KeyEvent.VK_LEFT:
+	                    camera = camera.left(0.1);
+	                    break;
+	                case KeyEvent.VK_RIGHT:
+	                    camera = camera.right(0.1);
+	                    break;
+                        
+                        
+//                    case KeyEvent.VK_A:
+//                    	scene.azimuth(-0.1);
+//                        break;
+//                    case KeyEvent.VK_S:
+//                    	scene.azimuth(0.1);
+//                        break;
+//                        
+//                    case KeyEvent.VK_D:
+//                    	scene.zenith(-0.1);
+//                        break;
+//                    case KeyEvent.VK_E:
+//                    	scene.zenith(0.1);
+//                        break;
+                }
+                super.keyReleased(e);
+            }
+        });
 	}	
 
 	public void add(Solid solid) {
@@ -81,6 +173,10 @@ public class Scene extends JComponent implements ActionListener {
 	
 	public void add(Solid solid, Mat4 transformation) {
 		solids.add(new SceneParticipant(solid, transformation));
+	}
+	
+	public void clear() {
+		solids.clear();
 	}
 	
 	@Override
@@ -94,21 +190,26 @@ public class Scene extends JComponent implements ActionListener {
 	public void paint(Graphics g) {
 		super.paint(g);		
 		image.clear();
-		pipeline.get().stream().forEach(l -> {
-			logger.info("paint: " + l);
+		pipeline.get().stream().forEach(l -> {			
 			lineRenderer.render(l, image);
 		});
-		logger.info("pipeline done");
 		image.draw(g);				
 	}	
 	
+//	private Function<Point3D, Point3D> transform = (p) -> {
+//		return p
+//			.mul(camera.getViewMatrix())
+//			//.mul(view2)
+//			.mul(ortho)			
+//			;			
+//	};	
+	
 	private Function<Point3D, Point3D> transform = (p) -> {
-		return p
-			//.mul(camera.getViewMatrix())
-			.mul(view2)
-			.mul(persp)			
-			;			
-	};	
+		return p.mul(
+			model.mul(
+			camera.getViewMatrix()).mul(
+			ortho));							
+	};
 
 	private Supplier<List<Line>> pipeline = () -> {
 		return solids.stream()
@@ -124,6 +225,9 @@ public class Scene extends JComponent implements ActionListener {
 					transform.apply(e.first),
 					transform.apply(e.second));
 			})
+//			.filter(p->{
+//				return p.first.getW()>0 && p.second.getW()>0;
+//			})
 //			.peek(e -> {
 //				logger.info("transformed: " + e);
 //			})
@@ -193,4 +297,13 @@ public class Scene extends JComponent implements ActionListener {
 			solid.transform(transformation);			
 		}		
 	}
+
+
+	public Camera getCamera() {
+		return camera;
+	}
+
+	public void setCamera(Camera camera) {
+		this.camera = camera;
+	}	
 }

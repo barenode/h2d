@@ -48,11 +48,11 @@ public class Scene extends JComponent implements ActionListener {
 				1)
 //			)
 			;
-	private Mat4OrthoRH ortho = new Mat4OrthoRH(
-		10, 
-		10, 
-		0, 
-		100);
+	Mat4OrthoRH ortho = new Mat4OrthoRH(
+			10, 
+			10, 
+			20, 
+			100);
 	
 	private Mat4 persp = new Mat4PerspRH(Math.PI/4, 1, 20, 100);
 	
@@ -62,9 +62,9 @@ public class Scene extends JComponent implements ActionListener {
 		new Vec3D(0, -1, -1));
 	
 	private Mat4 view2 = new Mat4ViewRH(
-			new Vec3D(30, 0, 0), 
-			new Vec3D(-1, 0, 0), 
-			new Vec3D(0, 1, -0));
+		new Vec3D(30, 0, 0), 
+		new Vec3D(-1, 0, 0), 
+		new Vec3D(0, 1, -0));
 	
 	private Renderer<Line> lineRenderer = new LineRendererDDA();
 	
@@ -135,7 +135,7 @@ public class Scene extends JComponent implements ActionListener {
 		return p
 			//.mul(camera.getViewMatrix())
 			.mul(view2)
-			.mul(persp)			
+			.mul(ortho)			
 			;			
 	};	
 

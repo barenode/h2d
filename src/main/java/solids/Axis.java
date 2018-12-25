@@ -12,16 +12,16 @@ public class Axis extends SolidBase {
 	Renderer<Line> Y_RENDERER = new LineRendererDDA(Color.GREEN);
 	Renderer<Line> Z_RENDERER = new LineRendererDDA(Color.BLUE);
 	
-    public Axis() {
+    public Axis(double length) {
     	super();
-    	getVerticies().add(new Point3D(0,0,0)); // 0.
-    	getVerticies().add(new Point3D(10,0,0)); // 1.
-//    	getVerticies().add(new Point3D(0,10,0)); // 2.
-//        getVerticies().add(new Point3D(0,0,10)); // 3.
+    	getVerticies().add(new Point3D(0, 0, 0)); // 0.
+    	getVerticies().add(new Point3D(length, 0, 0)); // 1.
+    	getVerticies().add(new Point3D(0, length, 0)); // 2.
+        getVerticies().add(new Point3D(0, 0, length)); // 3.
 
         getIndicies().add(0); getIndicies().add(1);
-//        getIndicies().add(0); getIndicies().add(2);
-//        getIndicies().add(0); getIndicies().add(3);
+        getIndicies().add(0); getIndicies().add(2);
+        getIndicies().add(0); getIndicies().add(3);
     }
 
     @Override

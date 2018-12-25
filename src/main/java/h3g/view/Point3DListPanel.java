@@ -28,27 +28,27 @@ public class Point3DListPanel extends JPanel implements ActionListener {
 		setSize(200, 600);	
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		//1
-		point1 = new Point3DPanel(1);
+		point1 = new Point3DPanel(1, "koule");
 		point1.setPointUpdatedListener(this);
 		add(point1);
 		//2
-		point2 = new Point3DPanel(2);
+		point2 = new Point3DPanel(2, "krychle");
 		point2.setPointUpdatedListener(this);
 		add(point2);
 		//3
-		point3 = new Point3DPanel(3);
+		point3 = new Point3DPanel(3, "jehlan");
 		point3.setPointUpdatedListener(this);
 		add(point3);
 		//4
-		point4 = new Point3DPanel(4);
+		point4 = new Point3DPanel(4, "valec");
 		point4.setPointUpdatedListener(this);
 		add(point4);
 		//5
-		point5 = new Point3DPanel(5);
+		point5 = new Point3DPanel(5, "osmisten");
 		point5.setPointUpdatedListener(this);
 		add(point5);
 		//6
-		point6 = new Point3DPanel(6);
+		point6 = new Point3DPanel(6, "diamant");
 		point6.setPointUpdatedListener(this);
 		add(point6);
 	}
@@ -64,9 +64,9 @@ public class Point3DListPanel extends JPanel implements ActionListener {
 	
 	private Point3D randomPoint() {
 		return new Point3D(
-			Utils.randomDouble(10.0),
-			Utils.randomDouble(10.0),
-			Utils.randomDouble(10.0)
+			Utils.randomDouble(9.0),
+			Utils.randomDouble(9.0),
+			Utils.randomDouble(9.0)
 		);
 	}
 	
