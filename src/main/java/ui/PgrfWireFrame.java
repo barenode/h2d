@@ -85,7 +85,7 @@ public class PgrfWireFrame extends JFrame {
         //int i = 0;
         int count = 5;
         for (int i = 0; i < count; i++) {
-            Cube cube = new Cube(1);
+            Cube cube = new Cube();
             for (int v = 0; v < cube.getVerticies().size(); v++) {
                 Point3D point3D = cube.getVerticies().get(v);
                 Point3D newPoint = point3D

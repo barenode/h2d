@@ -7,7 +7,7 @@ public class PipelineTestCase extends TestCase {
 
 	public void test() throws Exception {
 		Scene scene = new Scene();
-		scene.add(new Cube(10d));
+		//scene.add(new Cube(10d));
 		
 		//new Pipeline().accept(scene);
 	}

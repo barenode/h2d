@@ -73,12 +73,11 @@ public class H3GApp extends JFrame implements ActionListener {
 		public ControlPanel() {
 			super();
 			setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-			add(new CameraPanel(scene));
+//			add(new CameraPanel(scene));
 			
 			JButton shuffle = new JButton("shuffle");
 			shuffle.addActionListener(e -> {
-				points.shuffle();
-				scene.clear();
+				points.shuffle();				
 				prepareScene();
 			});
 			add(shuffle);
@@ -87,6 +86,7 @@ public class H3GApp extends JFrame implements ActionListener {
 	}
 	
 	private void prepareScene() {
+		scene.clear();
 		List<Point3D> ps = points.getPoints();
 		Solid solid1 = solid(0, ps.get(0));
 		scene.add(solid1, rotation(solid1));
@@ -99,8 +99,7 @@ public class H3GApp extends JFrame implements ActionListener {
 		Solid solid5 = solid(4, ps.get(4));
 		scene.add(solid5, rotation(solid5));
 		Solid solid6 = solid(5, ps.get(5));
-		scene.add(solid6, rotation(solid6));
-		
+		scene.add(solid6, rotation(solid6));		
 		scene.add(new Axis(10.0));
 		
 //		scene.add(curve(Cubic.BEZIER));
@@ -162,9 +161,7 @@ public class H3GApp extends JFrame implements ActionListener {
 			points.getPoints().get(4),
 			points.getPoints().get(5)
 		}));
-	}
-	
-	
+	}	
 	
 	private void coons() {
 		scene.add(curve(Cubic.COONS, new Point3D[]{
