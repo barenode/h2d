@@ -1,20 +1,27 @@
 package h3g;
 
+import static java.lang.Math.*;
+
 import java.awt.BorderLayout;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-import javax.swing.BoxLayout;
+import javax.swing.BorderFactory;
+import javax.swing.ButtonGroup;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 
 import h3df.Utils;
-import h3g.view.CameraPanel;
 import h3g.view.Point3DListPanel;
 import solids.Axis;
 import solids.Cube;
@@ -27,19 +34,23 @@ import solids.Sphere;
 import solids.Spire;
 import transforms.Cubic;
 import transforms.Mat4;
-import transforms.Mat4Identity;
 import transforms.Mat4RotX;
 import transforms.Mat4RotY;
 import transforms.Mat4RotZ;
 import transforms.Mat4Transl;
 import transforms.Point3D;
-import transforms.Vec3D;
 
 @SuppressWarnings("serial")
 public class H3GApp extends JFrame implements ActionListener {
 
 	private final Point3DListPanel points;
 	private final Scene scene;
+	private final Map<Solid, Mat4> solids = new HashMap<>();
+	
+	private boolean perspectiveEnabled = true;
+	private boolean bezierCurve = true;
+	private boolean coonsCurve = false;
+	private boolean fergusonCurve = false;
 	
 	public H3GApp() {
 		super();
@@ -61,54 +72,124 @@ public class H3GApp extends JFrame implements ActionListener {
 		left.add(points, BorderLayout.NORTH);		
 		left.add(new ControlPanel(), BorderLayout.CENTER);		
 		
-		
-		points.shuffle();	
-		prepareScene();
+		initScene();
 		startShow();
-		//pack();
 	}	
+	
+	private void initScene() {
+		points.shuffle();	
+		prepareSolids();
+		adjustScene();
+	}
 	
 	private class ControlPanel extends JPanel {
 		
 		public ControlPanel() {
 			super();
-			setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-//			add(new CameraPanel(scene));
-			
+			setLayout(new GridLayout(0, 1));
+			//shuffle
+			JPanel shufflePanel = new JPanel();
 			JButton shuffle = new JButton("shuffle");
 			shuffle.addActionListener(e -> {
-				points.shuffle();				
-				prepareScene();
+				initScene();
 			});
-			add(shuffle);
+			shufflePanel.add(shuffle);
+			add(shufflePanel);
 			
+			//projection			
+			JPanel projectionPanel = new JPanel();
+			ButtonGroup projectionGroup = new ButtonGroup();
+			projectionPanel.setBorder(BorderFactory.createTitledBorder("Projekce")); 
+			//orthogonal
+			JRadioButton  orhogonalProjection = new JRadioButton("Ortogonalni", !perspectiveEnabled);
+			orhogonalProjection.addItemListener(e -> {
+				perspectiveEnabled = e.getStateChange() == 1 ? false : true;
+				adjustScene();
+			});
+			projectionGroup.add(orhogonalProjection);
+			projectionPanel.add(orhogonalProjection);
+
+			//perspective
+			JRadioButton perspectiveProjection = new JRadioButton("Perspektivni", perspectiveEnabled);			
+			perspectiveProjection.addItemListener(e -> {
+				perspectiveEnabled = e.getStateChange() == 1 ? true : false;
+				adjustScene();
+			});
+			projectionGroup.add(perspectiveProjection);
+			projectionPanel.add(perspectiveProjection);
+			add(projectionPanel);
+			
+			//curves
+			JPanel curvePanel = new JPanel();
+			curvePanel.setBorder(BorderFactory.createTitledBorder("Krivky")); 
+			//bezier
+			JCheckBox bezier = new JCheckBox("Bezier", bezierCurve);				
+			bezier.addItemListener(e -> {
+				bezierCurve = e.getStateChange() == 1 ? true : false;
+				adjustScene();
+			});
+			curvePanel.add(bezier);
+			//coons
+			JCheckBox coons = new JCheckBox("Coons", coonsCurve);				
+			coons.addItemListener(e -> {
+				coonsCurve = e.getStateChange() == 1 ? true : false;
+				adjustScene();
+			});
+			curvePanel.add(coons);
+			//ferguson
+			JCheckBox ferguson = new JCheckBox("Ferguson", fergusonCurve);		
+			ferguson.addItemListener(e -> {
+				fergusonCurve = e.getStateChange() == 1 ? true : false;
+				adjustScene();
+			});
+			curvePanel.add(ferguson);
+			add(curvePanel);
 		}
 	}
 	
-	private void prepareScene() {
-		scene.clear();
+	private void prepareSolids() {
+		solids.clear();		
 		List<Point3D> ps = points.getPoints();
 		Solid solid1 = solid(0, ps.get(0));
-		scene.add(solid1, rotation(solid1));
+		solids.put(solid1, rotation(solid1));
 		Solid solid2 = solid(1, ps.get(1));
-		scene.add(solid2, rotation(solid2));
+		solids.put(solid2, rotation(solid2));
 		Solid solid3 = solid(2, ps.get(2));
-		scene.add(solid3, rotation(solid3));
+		solids.put(solid3, rotation(solid3));
 		Solid solid4 = solid(3, ps.get(3));
-		scene.add(solid4, rotation(solid4));
+		solids.put(solid4, rotation(solid4));
 		Solid solid5 = solid(4, ps.get(4));
-		scene.add(solid5, rotation(solid5));
+		solids.put(solid5, rotation(solid5));
 		Solid solid6 = solid(5, ps.get(5));
-		scene.add(solid6, rotation(solid6));		
+		solids.put(solid6, rotation(solid6));	
+	}
+	
+	private void adjustScene() {
+		scene.clear();
+		//solids
+		for (Map.Entry<Solid, Mat4> entry : solids.entrySet()) {
+			scene.add(entry.getKey(), entry.getValue());
+		}
+		//axis
 		scene.add(new Axis(10.0));
+		//projection
+		if (perspectiveEnabled) {
+			scene.perspectiveProjection();
+		} else {
+			scene.orthogonalProjection();
+		}		
+		//curves
+		if (bezierCurve) {
+			bezier();
+		}
+		if (coonsCurve) {
+			coons();
+		}
+		if (fergusonCurve) {
+			ferguson();
+		}
 		
-//		scene.add(curve(Cubic.BEZIER));
-//		scene.add(curve(Cubic.BEZIER, 1));
-//		scene.add(curve(Cubic.BEZIER, 2));
-//		scene.add(curve(Cubic.BEZIER, 3));
-//		scene.add(curve(Cubic.COONS));
-//		scene.add(curve(Cubic.FERGUSON));
-		bezier();
+		hypercircle();
 	}
 	
 	private Solid solid(int index, Point3D initialPosition) { 
@@ -137,13 +218,57 @@ public class H3GApp extends JFrame implements ActionListener {
 		return s;
 	}
 	
+	/**
+	 * Random rotation is assigned to each axis separately.
+	 */
 	private Mat4 rotation(Solid solid) {
-		return //new Mat4Identity();
+		return
 			new Mat4Transl(-solid.getCentroid().getX(), -solid.getCentroid().getY(), -solid.getCentroid().getZ()).mul(	
 			new Mat4RotZ(Utils.randomDouble(Math.PI / 100))).mul(
 			new Mat4RotY(Utils.randomDouble(Math.PI / 100))).mul(
 			new Mat4RotX(Utils.randomDouble(Math.PI / 100))).mul(
 			new Mat4Transl(solid.getCentroid().getX(), solid.getCentroid().getY(), solid.getCentroid().getZ()));
+	}
+	
+	private void hypercircle() {
+		List<Point3D> points = new ArrayList<>();
+		for (double p = 0.0; p<=2*PI; p+=0.01) {
+			double x = 0;
+			double y = 3.0*pow(abs(sin(p)), 1.0);
+			double z = 3.0*pow(abs(cos(p)), 1.0);
+			points.add(new Point3D(x, y, z));
+		}
+		scene.add(new Curve(points));
+		
+		for (double p = 0.0; p<=2*PI; p+=0.01) {
+			double x = 0;
+			double y = 4.0*pow(abs(sin(p)), 1.0);
+			double z = 4.0*pow(abs(cos(p)), 1.0);
+			points.add(new Point3D(x, y, z));
+		}
+		
+		for (double p = 0.0; p<=2*PI; p+=0.01) {
+			double x = 0;
+			double y = 4.0*pow(abs(sin(p)), 2.0);
+			double z = 4.0*pow(abs(cos(p)), 2.0);
+			points.add(new Point3D(x, y, z));
+		}
+		
+		for (double p = 0.0; p<=2*PI; p+=0.01) {
+			double x = 0;
+			double y = 4.0*pow(abs(sin(p)), 3.0);
+			double z = 4.0*pow(abs(cos(p)), 3.0);
+			points.add(new Point3D(x, y, z));
+		}
+		
+		for (double p = 0.0; p<=2*PI; p+=0.01) {
+			double x = 0;
+			double y = 4.0*pow(sin(p), 4.0);
+			double z = 4.0*pow(cos(p), 4.0);
+			points.add(new Point3D(x, y, z));
+		}
+		
+		scene.add(new Curve(points));
 	}
 	
 	private void bezier() {
@@ -214,36 +339,31 @@ public class H3GApp extends JFrame implements ActionListener {
 			points.getPoints().get(1),
 			points.getPoints().get(1),
 			points.getPoints().get(2)
-		}));
-		
+		}));		
 		scene.add(curve(Cubic.FERGUSON, new Point3D[]{
 			points.getPoints().get(1),
 			points.getPoints().get(2),
 			points.getPoints().get(2),
 			points.getPoints().get(3),
-		}));
-		
+		}));		
 		scene.add(curve(Cubic.FERGUSON, new Point3D[]{
 			points.getPoints().get(2),
 			points.getPoints().get(3),
 			points.getPoints().get(3),
 			points.getPoints().get(4),
-		}));
-		
+		}));		
 		scene.add(curve(Cubic.FERGUSON, new Point3D[]{
 			points.getPoints().get(3),
 			points.getPoints().get(4),
 			points.getPoints().get(4),
 			points.getPoints().get(5),
-		}));
-		
+		}));	
 		scene.add(curve(Cubic.FERGUSON, new Point3D[]{
 			points.getPoints().get(4),
 			points.getPoints().get(5),
 			points.getPoints().get(5),
 			points.getPoints().get(0)
 		}));		
-		
 		scene.add(curve(Cubic.FERGUSON, new Point3D[]{
 			points.getPoints().get(5),
 			points.getPoints().get(0),
@@ -252,23 +372,7 @@ public class H3GApp extends JFrame implements ActionListener {
 		}));	
 	}
 	
-	private Curve curve(Mat4 baseMat) {
-		return curve(baseMat, new Point3D[]{
-			points.getPoints().get(0),
-			points.getPoints().get(1),
-			new Point3D(),
-			points.getPoints().get(2)
-		});
-	}
-	
 	private Curve curve(Mat4 baseMat, Point3D[] points) {
-//		List<Point3D> ps = new ArrayList<>(); 
-//		ps.add(points.getPoints().get(0));		
-//		ps.add(points.getPoints().get(1));
-//		ps.add(new Point3D());
-//		ps.add(points.getPoints().get(2));
-		
-//		ps = ps.subList(index, ps.size());
 		Cubic cubic = new Cubic(baseMat, points);
 		List<Point3D> result = new ArrayList<>();
 		for (double d=0.0; d<=2.0; d+=0.01) {

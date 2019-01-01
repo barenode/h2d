@@ -174,6 +174,9 @@ public class Scene extends JComponent implements ActionListener {
 					e.first.mul(transformation),
 					e.second.mul(transformation));
 			})
+			.filter(p -> {
+				return p.first.getW()>0 && p.second.getW()>0;
+			})
 			.map(p -> {
 				return Pair.of(
 					p.first.dehomog(), 
@@ -209,7 +212,7 @@ public class Scene extends JComponent implements ActionListener {
 	 * Wraps {@see Solid} together with its own transformation.
 	 * Note that transformation is applied on each received event (frame).
 	 */
-	private static class SceneParticipant implements ActionListener {
+	public static class SceneParticipant implements ActionListener {
 		
 		private final Solid solid;
 		private final Mat4 transformation;

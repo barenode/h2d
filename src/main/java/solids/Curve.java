@@ -4,7 +4,7 @@ import java.util.List;
 
 import transforms.Point3D;
 
-public class Curve extends SolidBase {
+public class Curve extends SolidBase {	
 	
 	public Curve(List<Point3D> points) {
 		super();
