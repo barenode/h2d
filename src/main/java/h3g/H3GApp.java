@@ -4,6 +4,7 @@ import static java.lang.Math.*;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
+import java.awt.Label;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -51,10 +52,11 @@ public class H3GApp extends JFrame implements ActionListener {
 	private boolean bezierCurve = true;
 	private boolean coonsCurve = false;
 	private boolean fergusonCurve = false;
+	private boolean hypercircleCurve = false;
 	
 	public H3GApp() {
 		super();
-		setTitle("H3GApp");
+		setTitle("H3D");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);		
 		setLayout(new BorderLayout());
 		setSize(1105, 805);	
@@ -69,6 +71,10 @@ public class H3GApp extends JFrame implements ActionListener {
 		add(scene, BorderLayout.CENTER);
 		
 		points = new Point3DListPanel();		
+		points.setPointUpdatedListener(e->{
+			prepareSolids();
+			adjustScene();
+		});
 		left.add(points, BorderLayout.NORTH);		
 		left.add(new ControlPanel(), BorderLayout.CENTER);		
 		
@@ -89,7 +95,7 @@ public class H3GApp extends JFrame implements ActionListener {
 			setLayout(new GridLayout(0, 1));
 			//shuffle
 			JPanel shufflePanel = new JPanel();
-			JButton shuffle = new JButton("shuffle");
+			JButton shuffle = new JButton("Zamíchat");
 			shuffle.addActionListener(e -> {
 				initScene();
 			});
@@ -100,8 +106,9 @@ public class H3GApp extends JFrame implements ActionListener {
 			JPanel projectionPanel = new JPanel();
 			ButtonGroup projectionGroup = new ButtonGroup();
 			projectionPanel.setBorder(BorderFactory.createTitledBorder("Projekce")); 
+			projectionPanel.setLayout(new GridLayout(0, 1));
 			//orthogonal
-			JRadioButton  orhogonalProjection = new JRadioButton("Ortogonalni", !perspectiveEnabled);
+			JRadioButton  orhogonalProjection = new JRadioButton("Ortogonalní", !perspectiveEnabled);
 			orhogonalProjection.addItemListener(e -> {
 				perspectiveEnabled = e.getStateChange() == 1 ? false : true;
 				adjustScene();
@@ -110,7 +117,7 @@ public class H3GApp extends JFrame implements ActionListener {
 			projectionPanel.add(orhogonalProjection);
 
 			//perspective
-			JRadioButton perspectiveProjection = new JRadioButton("Perspektivni", perspectiveEnabled);			
+			JRadioButton perspectiveProjection = new JRadioButton("Perspektivní", perspectiveEnabled);			
 			perspectiveProjection.addItemListener(e -> {
 				perspectiveEnabled = e.getStateChange() == 1 ? true : false;
 				adjustScene();
@@ -121,7 +128,8 @@ public class H3GApp extends JFrame implements ActionListener {
 			
 			//curves
 			JPanel curvePanel = new JPanel();
-			curvePanel.setBorder(BorderFactory.createTitledBorder("Krivky")); 
+			curvePanel.setBorder(BorderFactory.createTitledBorder("Křivky")); 
+			curvePanel.setLayout(new GridLayout(0, 1));
 			//bezier
 			JCheckBox bezier = new JCheckBox("Bezier", bezierCurve);				
 			bezier.addItemListener(e -> {
@@ -142,8 +150,24 @@ public class H3GApp extends JFrame implements ActionListener {
 				fergusonCurve = e.getStateChange() == 1 ? true : false;
 				adjustScene();
 			});
-			curvePanel.add(ferguson);
+			curvePanel.add(ferguson);	
+			//hypercircle
+			JCheckBox hypercircle = new JCheckBox("Hyperkružnice", hypercircleCurve);		
+			hypercircle.addItemListener(e -> {
+				hypercircleCurve = e.getStateChange() == 1 ? true : false;
+				adjustScene();
+			});
+			curvePanel.add(hypercircle);
 			add(curvePanel);
+			
+			//hint
+			JPanel hintPanel = new JPanel();
+			hintPanel.setBorder(BorderFactory.createTitledBorder("Ovládání")); 
+			hintPanel.setLayout(new GridLayout(0, 1));
+			hintPanel.add(new Label("Nutné kliknout na plátno pro získání fokusu!"));
+			hintPanel.add(new Label("A, W, S, D - pohyb."));
+			hintPanel.add(new Label("Mys - úhel pohledu."));
+			add(hintPanel);
 		}
 	}
 	
@@ -188,8 +212,9 @@ public class H3GApp extends JFrame implements ActionListener {
 		if (fergusonCurve) {
 			ferguson();
 		}
-		
-		hypercircle();
+		if (hypercircleCurve) {
+			hypercircle();
+		}		
 	}
 	
 	private Solid solid(int index, Point3D initialPosition) { 
@@ -231,44 +256,30 @@ public class H3GApp extends JFrame implements ActionListener {
 	}
 	
 	private void hypercircle() {
-		List<Point3D> points = new ArrayList<>();
-		for (double p = 0.0; p<=2*PI; p+=0.01) {
+		for (double n = 0.5; n<3.0; n+=.5) {
+			hypercircle(n);
+		}		
+	}
+	
+	private void hypercircle(double n) {
+		double angle = PI/2;
+		List<Point3D> q1 = new ArrayList<>();
+		List<Point3D> q2 = new ArrayList<>();
+		List<Point3D> q3 = new ArrayList<>();
+		List<Point3D> q4 = new ArrayList<>();
+		for (double p = 0.0; p<=angle; p+=0.01) {
 			double x = 0;
-			double y = 3.0*pow(abs(sin(p)), 1.0);
-			double z = 3.0*pow(abs(cos(p)), 1.0);
-			points.add(new Point3D(x, y, z));
+			double y = 3.0*pow(abs(sin(p)), n);
+			double z = 3.0*pow(abs(cos(p)), n);
+			q1.add(new Point3D(x, +y, +z));
+			q2.add(new Point3D(x, +y, -z));
+			q3.add(new Point3D(x, -y, +z));
+			q4.add(new Point3D(x, -y, -z));
 		}
-		scene.add(new Curve(points));
-		
-		for (double p = 0.0; p<=2*PI; p+=0.01) {
-			double x = 0;
-			double y = 4.0*pow(abs(sin(p)), 1.0);
-			double z = 4.0*pow(abs(cos(p)), 1.0);
-			points.add(new Point3D(x, y, z));
-		}
-		
-		for (double p = 0.0; p<=2*PI; p+=0.01) {
-			double x = 0;
-			double y = 4.0*pow(abs(sin(p)), 2.0);
-			double z = 4.0*pow(abs(cos(p)), 2.0);
-			points.add(new Point3D(x, y, z));
-		}
-		
-		for (double p = 0.0; p<=2*PI; p+=0.01) {
-			double x = 0;
-			double y = 4.0*pow(abs(sin(p)), 3.0);
-			double z = 4.0*pow(abs(cos(p)), 3.0);
-			points.add(new Point3D(x, y, z));
-		}
-		
-		for (double p = 0.0; p<=2*PI; p+=0.01) {
-			double x = 0;
-			double y = 4.0*pow(sin(p), 4.0);
-			double z = 4.0*pow(cos(p), 4.0);
-			points.add(new Point3D(x, y, z));
-		}
-		
-		scene.add(new Curve(points));
+		scene.add(new Curve(q1));
+		scene.add(new Curve(q2));
+		scene.add(new Curve(q3));
+		scene.add(new Curve(q4));
 	}
 	
 	private void bezier() {

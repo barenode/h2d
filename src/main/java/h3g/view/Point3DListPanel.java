@@ -40,11 +40,11 @@ public class Point3DListPanel extends JPanel implements ActionListener {
 		point3.setPointUpdatedListener(this);
 		add(point3);
 		//4
-		point4 = new Point3DPanel(4, "valec");
+		point4 = new Point3DPanel(4, "válec");
 		point4.setPointUpdatedListener(this);
 		add(point4);
 		//5
-		point5 = new Point3DPanel(5, "osmisten");
+		point5 = new Point3DPanel(5, "osmistěn");
 		point5.setPointUpdatedListener(this);
 		add(point5);
 		//6
